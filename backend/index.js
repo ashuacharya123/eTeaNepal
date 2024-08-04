@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
+
 
 // Middleware
 app.use(cors());
@@ -22,6 +24,11 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', require('./routes/auth'));
+
+app.use('/api/products', require('./routes/products'));
+
+app.use('/api/orders', require('./routes/orders'));
+
 
 // Start the server
 const PORT = 8000; 
