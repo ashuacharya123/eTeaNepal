@@ -2,13 +2,16 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
+const Product = require('../models/Product');
+const Notification = require('../models/Notification');
 const auth = require('../middleware/auth');
 
-// Place an order
+// Place a new order
 router.post('/', auth, async (req, res) => {
     const { products, totalAmount } = req.body;
 
     try {
+        // Create a new order
         const newOrder = new Order({
             buyer: req.user.id,
             products,
@@ -16,8 +19,24 @@ router.post('/', auth, async (req, res) => {
         });
 
         const order = await newOrder.save();
-        res.json(order);
 
+        // Update product stock and send notifications to sellers
+        for (const item of products) {
+            const product = await Product.findById(item.product);
+
+            // Decrease the stock
+            product.stock -= item.quantity;
+            await product.save();
+
+            // Send a notification to the seller
+            const notification = new Notification({
+                user: product.seller,
+                message: `You have a new order for ${item.quantity} units of ${product.name}.`
+            });
+            await notification.save();
+        }
+
+        res.json(order);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
