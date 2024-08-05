@@ -48,6 +48,11 @@ router.post('/register', async (req, res) => {
 router.post('/product', auth, async (req, res) => {
     const { name, description, price, stock, image } = req.body;
 
+       // Ensure user is a seller
+       if (req.user.role !== 'seller') {
+        return res.status(401).json({ msg: 'User not authorized' });
+    }
+
     try {
         const newProduct = new Product({
             name,

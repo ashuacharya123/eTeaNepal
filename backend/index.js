@@ -33,6 +33,8 @@ app.use('/api/orders', require('./routes/orders'));
 
 app.use('/api/notifications', require('./routes/notifications'));
 
+app.use('/api/algorithms', require('./routes/algorithms'));
+
 
 
 // Start the server
