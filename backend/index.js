@@ -35,6 +35,9 @@ app.use('/api/notifications', require('./routes/notifications'));
 
 app.use('/api/algorithms', require('./routes/algorithms'));
 
+app.use('/api/cart', require('./routes/cart'));
+
+app.use('/api/user', require('./routes/user'));
 
 
 // Start the server

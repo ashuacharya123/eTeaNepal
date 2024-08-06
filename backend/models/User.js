@@ -8,7 +8,19 @@ const UserSchema = new Schema({
     password: { type: String, required: true },
     role: { type: String, enum: ['buyer', 'seller', 'admin'], required: true },
     panCard: { type: String },
-    verified: { type: Boolean, default: false }
+    verified: { type: Boolean, default: false },
+    otp: {
+        type: Number,
+        required: false
+    },
+    otpExpiry: {
+        type: Number,
+        required: false
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 module.exports = mongoose.model('User', UserSchema);
