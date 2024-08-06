@@ -7,35 +7,9 @@ const Notification = require('../models/Notification');
 const auth = require('../middleware/auth');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { check, validationResult } = require('express-validator');
-const nodemailer = require('nodemailer');
+const sendEmail = require('./email');
 
 
-// Helper function to send OTP
-const sendOTP = (email, otp) => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAILID,
-            pass: process.env.EMAILPASS
-        }
-    });
-
-    const mailOptions = {
-        from: process.env.EMAILID,
-        to: email,
-        subject: 'OTP Verification',
-        text: `Your OTP is ${otp}`
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-};
 
 
 // Register a new seller
@@ -67,7 +41,7 @@ router.post('/register', async (req, res) => {
         });
         await notification.save();
 
-        sendOTP(email, otp);
+        sendEmail(email,"OTP verification", `Your OTP is ${otp}`);
 
         res.status(200).json({ msg: 'OTP sent to email' });
 

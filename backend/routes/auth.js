@@ -7,37 +7,10 @@ const User = require("../models/User");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
+const sendEmail = require('./email');
 
-// Helper function to send OTP
-const sendOTP = (email, otp) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    auth: {
-      user: "clark.harris91@ethereal.email",
-      pass: "Yp5ZdaJ9vQA5XGx3tp",
-    },
-  });
-
-  async function main() {
-    // send mail with defined transport object
-    const info = await transporter.sendMail({
-      from: '"E-Tea Nepal" <clark.harris91@ethereal.email>', // sender address
-      to: email, // list of receivers
-      subject: "OTP Verification", // Subject line
-      text: `Your OTP is ${otp}`, // plain text body
-      html: `<b>Your OTP is ${otp}</b>`, // html body
-    });
-
-    console.log("Message sent: %s", info.messageId);
-    // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
-  }
-  
-  main().catch(console.error);
-};
 
 // Resend otp
-
 router.post('/resend-otp', async (req, res) => {
     const { email } = req.body;
 
@@ -55,7 +28,7 @@ router.post('/resend-otp', async (req, res) => {
     user.otpExpiry =futureTime;
 
     await user.save();
-    sendOTP(email, otp);
+    sendEmail(email,"OTP verification", `Your OTP is ${otp}`);
 
         res.status(200).send('OTP sent to your email');
     } catch (error) {
@@ -85,7 +58,7 @@ router.post("/signup", async (req, res) => {
     user.otpExpiry =futureTime;
 
     await user.save();
-    sendOTP(email, otp);
+    sendEmail(email,"OTP verification", `Your OTP is ${otp}`);
 
     res.status(200).json({ msg: "OTP sent to email" });
   } catch (err) {

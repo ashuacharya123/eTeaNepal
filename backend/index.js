@@ -27,6 +27,8 @@ app.use('/api/auth', require('./routes/auth'));
 
 app.use('/api/seller', require('./routes/seller'));
 
+app.use('/api/admin', require('./routes/admin'));
+
 app.use('/api/products', require('./routes/products'));
 
 app.use('/api/orders', require('./routes/orders'));
@@ -38,6 +40,8 @@ app.use('/api/algorithms', require('./routes/algorithms'));
 app.use('/api/cart', require('./routes/cart'));
 
 app.use('/api/user', require('./routes/user'));
+
+app.use('/api/payment', require('./routes/payment'));
 
 
 // Start the server
