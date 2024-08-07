@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Order = require('../models/Order');
 const Product = require('../models/Product');
 const Notification = require('../models/Notification');
 const auth = require('../middleware/auth');
@@ -9,6 +10,31 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('./email');
 
+
+// Seller dashboard
+router.get('/dashboard', auth, async (req, res) => {
+    try {
+        const sellerId = req.user.id;
+
+        // Get the total number of products listed by the seller
+        const totalProducts = await Product.countDocuments({ seller: sellerId });
+
+        // Get the total sales for the seller
+        const orders = await Order.find({
+            'products.product': { $in: await Product.find({ seller: sellerId }).select('_id') }
+        });
+
+        const totalSales = orders.reduce((total, order) => total + order.totalAmount, 0);
+
+        res.status(200).json({
+            totalProducts,
+            totalSales
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
 
 
 
@@ -28,8 +54,9 @@ router.post('/register', async (req, res) => {
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
             user.otp = otp;
-            user.otpExpiry = Date.now() + 3600000; // 1 hour from now
-
+            const date = new Date(Date.now()+ 600000); // 10 minutes from now
+              const futureTime = date.getTime();
+            user.otpExpiry =futureTime;
 
         await newUser.save();
 

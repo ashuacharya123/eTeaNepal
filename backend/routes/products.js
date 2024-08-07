@@ -4,6 +4,7 @@ const router = express.Router();
 const Product = require('../models/Product');
 const { check, validationResult } = require('express-validator');
 const auth = require('../middleware/auth');
+const User = require('../models/User');
 
 
 // Get all products
@@ -47,7 +48,9 @@ router.patch('/:id', auth, async (req, res) => {
         }
 
         // Ensure user owns the product
-        if (product.seller.toString() !== req.user.id) {
+        if (product.seller.toString() !== req.user.id ) {
+            const user = await User.findById(req.user.id).select('-password');
+            if(user.role != "admin")// admin can also make change
             return res.status(401).json({ msg: 'User not authorized' });
         }
 
@@ -72,6 +75,8 @@ router.delete('/:id', auth, async (req, res) => {
 
         // Ensure user owns the product
         if (product.seller.toString() !== req.user.id) {
+            const user = await User.findById(req.user.id).select('-password');
+            if(user.role != "admin")// admin can also make change
             return res.status(401).json({ msg: 'User not authorized' });
         }
 

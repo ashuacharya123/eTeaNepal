@@ -17,6 +17,7 @@ const UserSchema = new Schema({
         type: Number,
         required: false
     },
+    ratedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
     date: {
         type: Date,
         default: Date.now
