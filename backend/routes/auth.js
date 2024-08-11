@@ -21,18 +21,20 @@ router.post('/resend-otp', async (req, res) => {
             return res.status(400).send('User not found');
         }
 
+        const salt = await bcrypt.genSalt(10);
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    user.otp = otp;
-    const date = new Date(Date.now()+ 600000); // 10 minutes from now
-      const futureTime = date.getTime();
-    user.otpExpiry =futureTime;
+        const date = new Date(Date.now()+ 600000); // 10 minutes from now
+        const futureTime = date.getTime();
+        user.otpExpiry =futureTime;
+        user.otp = await bcrypt.hash(otp, salt);
 
     await user.save();
     sendEmail(email,"OTP verification", `Your OTP is ${otp}`);
 
         res.status(200).send('OTP sent to your email');
     } catch (error) {
-        res.status(500).send('Error resending OTP');
+        res.status(500).send('Error resending OTP')
+        console.log(error);
     }
 });
 
@@ -52,7 +54,8 @@ router.post("/signup", async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    user.otp = otp;
+    user.otp = await bcrypt.hash(otp, salt);
+
     const date = new Date(Date.now()+ 600000); // 10 minutes from now
       const futureTime = date.getTime();
     user.otpExpiry =futureTime;
@@ -77,39 +80,45 @@ router.post(
       check("otp", "OTP is required").not().isEmpty(),
     ],
     async (req, res) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
+      // const errors = validationResult(req);
+      // if (!errors.isEmpty()) {
+      //   return res.status(400).json({ errors: errors.array() });
+      // }
   
-      const { email, otp } = req.body;
+      let { email, otp } = req.body;
   
       try {
         let user = await User.findOne({ email });
-  
+        
         if (!user) {
           return res.status(400).json({ msg: "User not found" });
         }
-  
+        
         const date = new Date(Date.now());
         const CurrentTime = date.getTime();
         const isOtpExpired = user.otpExpiry < CurrentTime;
-  
+        
         // Check if the OTP is correct and not expired
-        if (user.otp === otp && !isOtpExpired) {
+        otp=`${otp}`// converting number otp to string
+        const isMatch = await bcrypt.compare(otp, user.otp);
+        console.log(otp)
+        if (!isMatch) {
+          return res.status(400).json({ msg: "Invalid otp" });
+        }
+        if (!isOtpExpired) {
           // OTP is correct and not expired, proceed with verification
           user.otp = undefined;
           user.otpExpiry = undefined;
           await user.save();
-  
+          
           // Send success response
           return res.status(200).json({ msg: "OTP verified, now you can login" });
         } 
-          // OTP is incorrect or expired, send error response
-          if(isOtpExpired){
-            return res.status(400).json({ msg: " OTP Expired" });
-          }
-          return res.status(400).json({ msg: "Invalid OTP" });
+        // OTP is incorrect or expired, send error response
+        if(isOtpExpired){
+          return res.status(400).json({ msg: " OTP Expired" });
+        }
+        return res.status(400).json({ msg: "Invalid OTP" });
         
       } catch (err) {
         console.error(err.message);
@@ -184,7 +193,11 @@ router.post(
         const isOtpExpired = user.otpExpiry < CurrentTime;
   
         // Check if the OTP is correct and not expired
-        if (user.otp === otp && !isOtpExpired) {
+        const isMatch = await bcrypt.compare(otp, user.otp);
+    if (!isMatch) {
+      return res.status(400).json({ msg: "Invalid otp" });
+    }
+        if (!isOtpExpired) {
           // OTP is correct and not expired, proceed with verification
           const salt = await bcrypt.genSalt(10);
           user.password = await bcrypt.hash(newPassword, salt);

@@ -5,8 +5,23 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const Product = require('../models/Product');
+const multer = require('multer');
 
 
+// Set up multer for file upload
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'backend/uploads/');  // Make sure this path matches where you want to store uploads
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${req.user.id}-${Date.now()}-${file.originalname}`);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Accept multiple fields if needed
+const uploadFields = upload.fields([{ name: 'panCardDocument', maxCount: 1 }]);
 
 //Update the rating of a product
 router.put('/product/rating',auth,async (req, res) => {
@@ -73,12 +88,33 @@ router.get('/me', auth, async (req, res) => {
 // @route    PUT api/users/me
 // @desc     Update current user's details
 // @access   Private
-router.put('/me', auth, async (req, res) => {
-    const { name, email } = req.body;
+router.put('/me', auth, uploadFields, async (req, res) => {
+    const {
+        name,
+        email,
+        role,
+        panCard,
+        businessName,
+        businessAddress,
+        mobileNumber,
+        verified,
+    } = req.body;
+
     const userFields = {};
 
     if (name) userFields.name = name;
     if (email) userFields.email = email;
+    if (role) userFields.role = role;
+    if (panCard) userFields.panCard = panCard;
+    if (businessName) userFields.businessName = businessName;
+    if (businessAddress) userFields.businessAddress = businessAddress;
+    if (mobileNumber) userFields.mobileNumber = mobileNumber;
+    if (typeof verified !== 'undefined') userFields.verified = verified;
+
+    // Handle file upload
+    if (req.file) {
+        userFields.panCardDocument = req.file.path;  // Save the file path to the user fields
+    }
 
     try {
         let user = await User.findById(req.user.id);
@@ -87,6 +123,7 @@ router.put('/me', auth, async (req, res) => {
             return res.status(404).json({ msg: 'User not found' });
         }
 
+        // Update the user's details
         user = await User.findByIdAndUpdate(
             req.user.id,
             { $set: userFields },
