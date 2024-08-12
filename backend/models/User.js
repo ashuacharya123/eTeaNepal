@@ -7,11 +7,11 @@ const UserSchema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, default: 'buyer', required: true },
-    panCard: { type: String },
+    panCard: { type: Number },
     panCardDocument: { type: String }, // Store path or URL of the uploaded PAN card document
     businessName: { type: String },
     businessAddress: { type: String },
-    mobileNumber: { type: String },
+    mobileNumber: { type: Number },
     verified: { type: Boolean, default: false },
     otp: {
         type: String,
@@ -22,6 +22,7 @@ const UserSchema = new Schema({
         required: false
     },
     ratedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+    avatar: { type: String },
     date: {
         type: Date,
         default: Date.now

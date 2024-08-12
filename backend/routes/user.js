@@ -1,27 +1,35 @@
 // routes/users.js
 const auth = require('../middleware/auth');
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const Product = require('../models/Product');
 const multer = require('multer');
+const fs = require('fs');
+
 
 
 // Set up multer for file upload
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'backend/uploads/');  // Make sure this path matches where you want to store uploads
+        cb(null, path.join(__dirname, '../public'));  // Adjust the path as needed
     },
     filename: function (req, file, cb) {
-        cb(null, `${req.user.id}-${Date.now()}-${file.originalname}`);
+        let str = file.originalname.replace(/\s+/g, '');// Remove space between file name
+        cb(null, `${req.user.id}-${Date.now()}-${str}`);
     }
 });
 
 const upload = multer({ storage: storage });
 
 // Accept multiple fields if needed
-const uploadFields = upload.fields([{ name: 'panCardDocument', maxCount: 1 }]);
+const uploadFields = upload.fields([{ name: 'panCardDocument', maxCount: 1 },
+    { name: 'avatar', maxCount: 1 }, ]);
+
+
+
 
 //Update the rating of a product
 router.put('/product/rating',auth,async (req, res) => {
@@ -97,7 +105,6 @@ router.put('/me', auth, uploadFields, async (req, res) => {
         businessName,
         businessAddress,
         mobileNumber,
-        verified,
     } = req.body;
 
     const userFields = {};
@@ -109,18 +116,39 @@ router.put('/me', auth, uploadFields, async (req, res) => {
     if (businessName) userFields.businessName = businessName;
     if (businessAddress) userFields.businessAddress = businessAddress;
     if (mobileNumber) userFields.mobileNumber = mobileNumber;
-    if (typeof verified !== 'undefined') userFields.verified = verified;
-
-    // Handle file upload
-    if (req.file) {
-        userFields.panCardDocument = req.file.path;  // Save the file path to the user fields
-    }
 
     try {
         let user = await User.findById(req.user.id);
 
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Handle file uploads
+        if (req.files) {
+            if (req.files.panCardDocument) {
+                // Delete the old PAN card document if it exists
+                if (user.panCardDocument) {
+                    const oldPanCardPath = path.join(__dirname, '../public/', user.panCardDocument);
+                    if (fs.existsSync(oldPanCardPath)) {
+                        fs.unlinkSync(oldPanCardPath);
+                    }
+                }
+                // Save the new PAN card document
+                userFields.panCardDocument = req.files.panCardDocument[0].filename;
+            }
+
+            if (req.files.avatar) {
+                // Delete the old avatar if it exists
+                if (user.avatar) {
+                    const oldAvatarPath = path.join(__dirname, '../public/', user.avatar);
+                    if (fs.existsSync(oldAvatarPath)) {
+                        fs.unlinkSync(oldAvatarPath);
+                    }
+                }
+                // Save the new avatar
+                userFields.avatar = req.files.avatar[0].filename;
+            }
         }
 
         // Update the user's details

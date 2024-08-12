@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
+const path = require('path');
 require('dotenv').config();
 
 
@@ -22,6 +23,7 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
 app.get('/', (req, res) => {
     res.send('API is running...');
 });
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', require('./routes/auth'));
 

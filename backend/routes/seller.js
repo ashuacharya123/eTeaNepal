@@ -10,30 +10,54 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('./email');
 const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 
 
-// Configure multer for file uploads
+
+// Set up multer for file upload
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, 'backend/uploads/'); // Set the upload destination
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, '../public'));  // Adjust the path as needed
     },
-    filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    filename: function (req, file, cb) {
+        let str = file.originalname.replace(/\s+/g, '');// Remove space between file name
+        cb(null, `${Date.now()}-${str}`);
     }
 });
 
 const upload = multer({ storage: storage });
 
+// Accept multiple fields if needed
+const uploadFields = upload.fields([{ name: 'panCardDocument', maxCount: 1 } ]);
+
+
+
+
 // Register a new seller
-router.post('/register', upload.single('panCardDocument'), async (req, res) => {
-    const { name, email, password, businessName, businessAddress, panCard, mobileNumber } = req.body;
-    const panCardDocument = req.file ? req.file.path : null;
+router.post('/register', uploadFields, async (req, res) => {
+    const { name, email, password, businessName, businessAddress, panCard, mobileNumber, } = req.body;
+
 
     try {
+         // Check if all required fields are present
+         if (!name || !email || !password || !businessName || !businessAddress || !panCard || !mobileNumber) {
+            return res.status(400).json({ msg: 'All fields are required' });
+        }
+
+        // Check if the PAN card document file is uploaded
+        if (!req.files || !req.files.panCardDocument || !req.files.panCardDocument[0]) {
+            return res.status(400).json({ msg: 'PAN card document is required' });
+        }
+
         let user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({ msg: 'Seller already exists' });
         }
+
+        // Handle file uploads
+        // Save the new PAN card document
+        const panCardDocument = req.files.panCardDocument[0].filename;
 
         const newUser = new User({ 
             name, 
