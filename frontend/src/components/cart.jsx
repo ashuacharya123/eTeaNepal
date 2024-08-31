@@ -107,8 +107,8 @@ const Cart = () => {
                     </div>
                     <div className="cart__container__content__upper__details">
                       <span>
-                        {d.price} <li>{d.cutPrice}</li>
-                        <button>{d.discount}% off</button>
+                        Rs {d.price} <li>{d.cutPrice}</li>
+                        <button>{d.stock} left</button>
                       </span>
                       <h6>{d.name}</h6>
                       <span>

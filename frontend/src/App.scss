@@ -16,6 +16,13 @@ $lightGreen:#5DB646;
 .dn {
   display: none;
 }
+.asl{
+  align-self: baseline;
+}
+
+.mb1{
+  margin-bottom: 1rem;
+}
 
 .g2{
   gap: .5rem;
@@ -261,6 +268,7 @@ body {
       font-family: inherit;
       font-size: 2rem;
       color: #3d3d3d;
+
     }
 
     &__text {
@@ -449,6 +457,7 @@ body {
 }
 // todo : Shop Section
 
+
 .shop__container {
   padding-top: 10rem;
   display: flex;
@@ -481,6 +490,10 @@ body {
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='black' stroke-width='4' stroke-dasharray='20%2c 20' stroke-dashoffset='0' stroke-linecap='butt'/%3e%3c/svg%3e");
     // border: 0.1px dashed black;
     transition: all 0.2s;
+    @media screen and (min-width: 656px) {
+
+          width: min(98%, 38rem);
+      }
 
     &:hover,
     &:active,
@@ -489,11 +502,48 @@ body {
       transform: scale(1.01);
     }
     &__card__container {
-      opacity: 0;
+      // opacity: 0;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
+
+      #hoverDescription{
+        color: black;
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        top: 0%;
+        height: 50%;
+        width: 100%;
+        background-color: $lightGreen;
+        color: $white;
+        transition: all 0.5s ease-in-out;
+        text-align: center;
+        display: flex;
+        justify-content: center;align-items: center;
+        flex-direction: column;
+        font-size: 1.5rem;
+
+       
+      }
+      
+      &:hover #hoverDescription {
+       animation: description .5s ease forwards;
+       opacity: 1;
+
+      }
+
+     
+
+      .rating{
+        font-size: 1.3rem;
+        
+        width: 84%;
+        margin-inline:  auto;
+        font-weight: 300;
+      }
 
       &__card__image {
         img {
@@ -515,6 +565,8 @@ body {
             color: black;
             opacity: 0.6;
             position: relative;
+            margin-left: -3rem;
+            scale: 0.8;
 
             &::before {
               content: "";
@@ -530,8 +582,12 @@ body {
           &:nth-of-type(1) {
             display: flex;
             align-items: center;
-            justify-content: space-around;
-            width: 100%;
+            justify-content: space-between;
+            width: 95%;
+@media screen and (max-width:656px) {
+  
+  font-size: 2.5rem;
+}
             button {
               font-family: inherit;
               text-align: center;
@@ -1152,7 +1208,7 @@ body {
       button {
         margin-left: -0.6rem;
         padding: 2rem 8rem 2rem 8rem;
-        font-size: 3rem;
+        font-size: 2rem;
        
         transform: translateX(-40rem);
       }
@@ -1674,5 +1730,24 @@ body {
   }
   100% {
     transform: scale(1);
+  }
+}
+
+
+@keyframes description {
+  0% {
+    top: 100%;
+    scale: 0;
+
+    
+  }
+  
+  100% {
+    top: 0%;
+    scale: 0.9;
+border-radius: 2rem;
+
+
+
   }
 }
