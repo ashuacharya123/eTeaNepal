@@ -40,7 +40,7 @@ router.post('/resend-otp', async (req, res) => {
 
 // Sign up
 router.post("/signup", async (req, res) => {
-  const { name, email, password, role, panCard } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -48,7 +48,9 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ msg: "User already exists" });
     }
 
-    user = new User({ name, email, password, role, panCard });
+    let role="buyer";
+
+    user = new User({ name, email, password, role });
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
