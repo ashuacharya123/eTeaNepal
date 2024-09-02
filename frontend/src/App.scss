@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
+@import "./sass/login";
+@import "./sass/loader";
+
 $baseColor: #e7d400;
 $bodyColor: #e3efed;
 $white: #ffffff;
@@ -22,6 +25,16 @@ $lightGreen:#5DB646;
 
 .mb1{
   margin-bottom: 1rem;
+}
+
+.clickAnimation{
+  transition: all 0.5s;
+  &:hover{
+    scale: 1.03;
+  }
+  &:active{
+    transform: scale(0.95);
+  }
 }
 
 .g2{

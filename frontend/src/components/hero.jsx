@@ -35,7 +35,7 @@ const Hero = () => {
           {/* </Link> */}
           </ScrollLink>
           <Link to="/best_deals">
-            <button className="ml2 " id="btn-secondary">Best Deals</button>
+            <button className="ml2 clickAnimation" id="btn-secondary">Best Deals</button>
           </Link>
           </div>
         </div>

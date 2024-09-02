@@ -51,6 +51,7 @@ const Mobile_menu = () => {
     <div className="hero__mobile__menu">
       <a
         href="#home"
+         className="clickAnimation"
         onClick={() => handleNavigationAndScroll('/', 'home')}
       >
         <div className={move < 12 ? "active" : ""}>
@@ -60,6 +61,7 @@ const Mobile_menu = () => {
       </a>
       <a
         href="#explore"
+        className="clickAnimation"
         onClick={() => handleNavigationAndScroll('/', 'explore')}
       >
         <div className={(move > 12) && (move < 45) ? "active" : ""}>
@@ -69,8 +71,8 @@ const Mobile_menu = () => {
       </a>
       <a
         href="#nothing"
-        id={trigger % 2 === 0 ? "trigger" : ""}
-        className={trigger % 2 !== 0 ? "trigger" : ""}
+        id={trigger % 2 === 0 ? "trigger " : ""}
+        className={trigger % 2 !== 0 ? "trigger clickAnimation" : "clickAnimation"}
         onClick={() => {
           setCartShow(!cartShow);
         }}
@@ -80,6 +82,7 @@ const Mobile_menu = () => {
       </a>
       <a
         href="#shop"
+         className="clickAnimation"
         onClick={() => handleNavigationAndScroll('/', 'shop')}
       >
         <div className={(move > 45) && (move < 85) ? "active" : ""}>
@@ -89,6 +92,7 @@ const Mobile_menu = () => {
       </a>
       <a
         href="#contact"
+         className="clickAnimation"
         onClick={() => handleNavigationAndScroll('/', 'contact')}
       >
         <div className={move > 85 ? "active" : ""}>
