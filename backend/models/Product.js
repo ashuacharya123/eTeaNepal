@@ -17,7 +17,7 @@ const ProductSchema = new mongoose.Schema({
             message: 'Rating must be between 1 and 5'
         }
     },
-    ratingCount: { type: Number, default: 0 },
+    ratingCount: { type: Number, default: 0 }, 
     createdAt: { type: Date, default: Date.now }
 });
 

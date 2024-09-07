@@ -11,6 +11,7 @@ const UserSchema = new Schema({
     panCardDocument: { type: String }, // Store path or URL of the uploaded PAN card document
     businessName: { type: String },
     businessAddress: { type: String },
+    address: { type: String }, //for buyer
     mobileNumber: { type: Number },
     verified: { type: Boolean, default: false },
     otp: {

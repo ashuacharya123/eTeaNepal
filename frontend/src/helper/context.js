@@ -1,14 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-export const cartContext = createContext([
-  {
-    0: 0,
-    1: 1,
-    2: 2,
-    3: 3,
-    4: 4,
-  },
-]);
+export const cartContext = createContext(null);
 
 const AuthContext = createContext();
 
@@ -23,8 +15,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('x-auth-token');
+    localStorage.clear();
     setIsAuthenticated(false);
+
+    // Force a page refresh
+  window.location.reload();
+
   };
 
   return (

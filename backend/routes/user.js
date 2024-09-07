@@ -105,6 +105,7 @@ router.put('/me', auth, uploadFields, async (req, res) => {
         businessName,
         businessAddress,
         mobileNumber,
+        address
     } = req.body;
 
     const userFields = {};
@@ -116,6 +117,7 @@ router.put('/me', auth, uploadFields, async (req, res) => {
     if (businessName) userFields.businessName = businessName;
     if (businessAddress) userFields.businessAddress = businessAddress;
     if (mobileNumber) userFields.mobileNumber = mobileNumber;
+    if (address) userFields.address = address;
 
     try {
         let user = await User.findById(req.user.id);

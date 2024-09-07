@@ -1,4 +1,3 @@
-// routes/orders.js
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
@@ -43,12 +42,23 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
-// Get all orders for a user
+// Get all orders for a user (Buyer)
 router.get('/', auth, async (req, res) => {
     try {
         const orders = await Order.find({ buyer: req.user.id }).populate('products.product');
         res.json(orders);
 
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// Get all orders for a seller
+router.get('/seller-orders', auth, async (req, res) => {
+    try {
+        const orders = await Order.find({ "products.seller": req.user.id }).populate('products.product');
+        res.json(orders);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
@@ -70,7 +80,7 @@ router.get('/:id', auth, async (req, res) => {
     }
 });
 
-// Update order status
+// Update order status (Admin/Seller)
 router.put('/:id', auth, async (req, res) => {
     const { status } = req.body;
 
@@ -82,7 +92,7 @@ router.put('/:id', auth, async (req, res) => {
         }
 
         // Ensure user is an admin or the seller
-        if (req.user.role !== 'admin' && req.user.id !== order.seller.toString()) {
+        if (req.user.role !== 'admin' && !order.products.some(product => product.seller.toString() === req.user.id)) {
             return res.status(401).json({ msg: 'User not authorized' });
         }
 

@@ -48,9 +48,10 @@ const LoginSignup = () => {
             'x-auth-token': localStorage.getItem('x-auth-token'),
           },
         });
-        const { avatar, role } = response.data;
+        const { avatar, role, name } = response.data;
         localStorage.setItem('avatar', avatar);
-    localStorage.setItem('role', role);
+        localStorage.setItem('name', name);
+        localStorage.setItem('role', role);
       } catch (error) {
         
       }

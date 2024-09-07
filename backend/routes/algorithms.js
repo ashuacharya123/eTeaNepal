@@ -14,7 +14,7 @@ const priceWeight = 0.3;
 const ratingCountWeight = 0.2; // New weight for ratingCount
 
 // Function to calculate weighted score
-function calculateWeightedScore(rating, price, maxPrice, ratingCount) {
+function calculateWeightedScore(rating=0, price, maxPrice, ratingCount) {
     const ratingPercentage = (rating / 5) * 100;
     const pricePercentage = ((maxPrice - price) / maxPrice) * 100;
     const ratingCountPercentage = (ratingCount / 100) * 100; // Assume 100 is a max rating count for scaling

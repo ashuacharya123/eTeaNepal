@@ -10,10 +10,15 @@ const Shop = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/products'); // Replace with your API endpoint
-        setCardList(response.data);  // Assuming your backend returns an array of products
-        setLoading(false);  // Set loading to false after data is fetched
-        console.log(cardList)
+        const response = await axios.get('http://localhost:8000/api/products');
+        // Assuming the backend returns an array of products
+        // Map through the products and set image to empty string if not present
+        const products = response.data.map(product => ({
+          ...product,
+          image: product.image || ""  // Set image to "" if it's missing
+        }));
+        setCardList(products);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
         setLoading(false);  // Set loading to false even if there is an error
@@ -40,26 +45,3 @@ const Shop = () => {
 };
 
 export default Shop;
-
-
-// const Shop = () => {
-//   const cardList = [
-//     [0, 2.99, 3.99, 30, "Spritize minize zirotone"],
-//     [1, 3.99, 4.99, 40, "Tulsi"],
-//     [2, 2.99, 3.99, 10, "Spritize minize zirotone"],
-//     [3, 3.99, 5.99, 40, "Tulsi"],
-//   ];
-
-//   return (
-//     <>
-//       <div className="shop__container ml2 mr2" id="shop">
-//         {cardList.map((card) => {
-//           return <Card key={card} props={card} />;
-//         })}
-//       </div>
-//       <div id="contact"></div>
-//     </>
-//   );
-// };
-
-

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
-import home from "../Assets/icons/home.svg";
 import { useLocation, useNavigate } from 'react-router-dom';
+import home from "../Assets/icons/home.svg";
 import explore from "../Assets/icons/explore.svg";
 import shop from "../Assets/icons/shop.svg";
 import contact from "../Assets/icons/contact.svg";
@@ -9,19 +9,31 @@ import { cartContext, showCart } from "../helper/context";
 
 const Mobile_menu = () => {
   const [move, setMove] = useState(0);
-  const location = useLocation();  // Detect the current route
-  const navigate = useNavigate();  // Use for navigation
-
-  document.addEventListener("scroll", () => {
-    const maxHeight = document.body.scrollHeight - window.innerHeight;
-    setMove((window.pageYOffset * 100) / maxHeight);
-  });
+  const location = useLocation(); // Detect the current route
+  const navigate = useNavigate(); // Use for navigation
 
   const { cartShow, setCartShow } = useContext(showCart);
-  const { cart, setCart } = useContext(cartContext);
+  const { cart } = useContext(cartContext);
 
   const [trigger, setTrigger] = useState(0);
 
+  // Handle scroll event
+  useEffect(() => {
+    const handleScroll = () => {
+      const maxHeight = document.body.scrollHeight - window.innerHeight;
+      setMove((window.pageYOffset * 100) / maxHeight);
+    };
+
+    // Add scroll event listener
+    document.addEventListener("scroll", handleScroll);
+
+    // Clean up event listener on component unmount
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Handle navigation and scroll to section
   const handleNavigationAndScroll = (path, sectionId) => {
     if (location.pathname !== path) {
       navigate(path);
@@ -35,27 +47,27 @@ const Mobile_menu = () => {
     setCartShow(false);
   };
 
-  // Check if cart is defined and has items
-  let quantity = null;
-  if (cart && cart.length > 0) {
-    quantity = cart[cart.length - 1][0]?.totalQuantity || 0;
-  }
+  // Calculate total quantity in the cart
+  const calculateTotalQuantity = () => {
+    return cart.reduce((total, item) => total + item[0]?.quantity || 0, 0);
+  };
+
+  // Update quantity when cart changes
+  const quantity = calculateTotalQuantity();
 
   useEffect(() => {
-    if (cart) {
-      setTrigger(trigger + 1);
-    }
-  }, [cart.length]);
+    setTrigger(prevTrigger => prevTrigger + 1);
+  }, [cart]);
 
   return (
     <div className="hero__mobile__menu">
       <a
         href="#home"
-         className="clickAnimation"
+        className="clickAnimation"
         onClick={() => handleNavigationAndScroll('/', 'home')}
       >
         <div className={move < 12 ? "active" : ""}>
-          <img src={home} alt="" />
+          <img src={home} alt="Home" />
         </div>
         <span>Home</span>
       </a>
@@ -70,19 +82,17 @@ const Mobile_menu = () => {
         <span>Explore</span>
       </a>
       <a
-        href="#nothing"
-        id={trigger % 2 === 0 ? "trigger " : ""}
+        href="#cart"
+        id={trigger % 2 === 0 ? "trigger" : ""}
         className={trigger % 2 !== 0 ? "trigger clickAnimation" : "clickAnimation"}
-        onClick={() => {
-          setCartShow(!cartShow);
-        }}
+        onClick={() => setCartShow(prev => !prev)}
       >
         <span type="quantity">{quantity}</span>
         <img src={cartIcon} alt="Cart" />
       </a>
       <a
         href="#shop"
-         className="clickAnimation"
+        className="clickAnimation"
         onClick={() => handleNavigationAndScroll('/', 'shop')}
       >
         <div className={(move > 45) && (move < 85) ? "active" : ""}>
@@ -92,7 +102,7 @@ const Mobile_menu = () => {
       </a>
       <a
         href="#contact"
-         className="clickAnimation"
+        className="clickAnimation"
         onClick={() => handleNavigationAndScroll('/', 'contact')}
       >
         <div className={move > 85 ? "active" : ""}>
