@@ -1,4 +1,3 @@
-// routes/sellers.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
@@ -13,15 +12,18 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 
-
-
 // Set up multer for file upload
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../public'));  // Adjust the path as needed
+        // Check if the file field is 'productImage'
+        if (file.fieldname === 'productImage') {
+            cb(null, path.join(__dirname, '../public')); // Destination for product images
+        } else {
+            cb(null, path.join(__dirname, '../public')); // Default destination
+        }
     },
     filename: function (req, file, cb) {
-        let str = file.originalname.replace(/\s+/g, '');// Remove space between file name
+        let str = file.originalname.replace(/\s+/g, ''); // Remove spaces between file names
         cb(null, `${Date.now()}-${str}`);
     }
 });
@@ -29,19 +31,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Accept multiple fields if needed
-const uploadFields = upload.fields([{ name: 'panCardDocument', maxCount: 1 } ]);
-
-
-
+const uploadFields = upload.fields([
+    { name: 'panCardDocument', maxCount: 1 },
+    { name: 'productImage', maxCount: 1 } // Add support for product image
+]);
 
 // Register a new seller
 router.post('/register', uploadFields, async (req, res) => {
-    const { name, email, password, businessName, businessAddress, panCard, mobileNumber, } = req.body;
-
+    const { name, email, password, businessName, businessAddress, panCard, mobileNumber } = req.body;
 
     try {
-         // Check if all required fields are present
-         if (!name || !email || !password || !businessName || !businessAddress || !panCard || !mobileNumber) {
+        // Check if all required fields are present
+        if (!name || !email || !password || !businessName || !businessAddress || !panCard || !mobileNumber) {
             return res.status(400).json({ msg: 'All fields are required' });
         }
 
@@ -59,16 +60,16 @@ router.post('/register', uploadFields, async (req, res) => {
         // Save the new PAN card document
         const panCardDocument = req.files.panCardDocument[0].filename;
 
-        const newUser = new User({ 
-            name, 
-            email, 
-            password, 
-            role: 'seller', 
-            panCard, 
-            panCardDocument, 
-            businessName, 
-            businessAddress, 
-            mobileNumber 
+        const newUser = new User({
+            name,
+            email,
+            password,
+            role: 'seller',
+            panCard,
+            panCardDocument,
+            businessName,
+            businessAddress,
+            mobileNumber
         });
 
         const salt = await bcrypt.genSalt(10);
@@ -115,9 +116,21 @@ router.get('/dashboard', auth, async (req, res) => {
 
         const totalSales = orders.reduce((total, order) => total + order.totalAmount, 0);
 
+        // Get the list of products with their details
+        const products = await Product.find({ seller: sellerId });
+
         res.status(200).json({
             totalProducts,
-            totalSales
+            totalSales,
+            products: products.map(product => ({
+                name: product.name,
+                description:product.description,
+                stock: product.stock,
+                finalPrice: product.price,
+                initialPrice: product.initialPrice,
+                image: product.image,
+                id:product._id
+            }))
         });
     } catch (error) {
         console.error(error.message);
@@ -127,21 +140,29 @@ router.get('/dashboard', auth, async (req, res) => {
 
 
 // Add a new product (only for sellers)
-router.post('/product', auth, async (req, res) => {
-    const { name, description, price, stock, image } = req.body;
+router.post('/product', auth, uploadFields, async (req, res) => {
+    const { name, description, price, stock, initialPrice } = req.body;
 
-       // Ensure user is a seller
-       if (req.user.role !== 'seller') {
+    // Ensure user is a seller
+    const requestedUser = await User.find({ _id: req.user.id });
+
+    if (requestedUser[0].role !== 'seller') {
         return res.status(401).json({ msg: 'User not authorized' });
     }
+
+    console.log(req.body);
+
+    // Check if the product image file is uploaded
+    const productImage = req.files && req.files.productImage && req.files.productImage[0] ? req.files.productImage[0].filename : null;
 
     try {
         const newProduct = new Product({
             name,
             description,
             price,
+            initialPrice,
             stock,
-            image,
+            image: productImage,
             seller: req.user.id,
             verified: false // initially not verified
         });

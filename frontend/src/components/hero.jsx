@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 
-import MobileMenu from "./mobile_menu";
-import Navbar from "./navbar";
 
 
 const Hero = () => {
@@ -14,22 +14,29 @@ const Hero = () => {
   const yOffset = 10;
   return (
     <div className="hero__container" id="home">
-      <MobileMenu />
+      {/* <MobileMenu /> */}
 
       <div className="hero__content ">
-        <Navbar/>
+        {/* <Navbar/> */}
         
         <div className="hero__upper ">
           <h2 className="hero__upper__text" id="margin">
           Bringing Nepal’s best tea to your doorstep
           </h2>
           <div className="df fdc g2">
-          <a href="#shop">
+          <ScrollLink 
+        to="shop" 
+        smooth={true} 
+        duration={200} 
+
+      >
+          {/* <Link to="shop"> */}
             <button className="ml2 btn-primary">Shop Now</button>
-          </a>
-          <a href="#">
-            <button className="ml2 " id="btn-secondary">Best Deals</button>
-          </a>
+          {/* </Link> */}
+          </ScrollLink>
+          <Link to="/best_deals">
+            <button className="ml2 clickAnimation" id="btn-secondary">Best Deals</button>
+          </Link>
           </div>
         </div>
         <div className="hero__lower">
