@@ -49,13 +49,15 @@ const LoginSignup = () => {
             'x-auth-token': localStorage.getItem('x-auth-token'),
           },
         });
-        const { avatar, role, name, address, mobileNumber,ratedProducts } = response.data;
+        const { avatar, role, name, address, mobileNumber,ratedProducts,_id } = response.data;
         localStorage.setItem('avatar', avatar);
         localStorage.setItem('name', name);
         localStorage.setItem('role', role);
         if(address){localStorage.setItem('address', address)}else{localStorage.setItem('address', "")}
         if(mobileNumber){localStorage.setItem('mobileNumber', mobileNumber)}else{localStorage.setItem('mobileNumber', "")}
         localStorage.setItem('ratedProducts', JSON.stringify(ratedProducts));
+        localStorage.setItem('id', _id);
+        window.location.reload();
       } catch (error) {
         
       }

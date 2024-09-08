@@ -4,7 +4,12 @@ import { useAuth } from '../helper/context'; // Ensure this hook provides necess
 import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const AdminDashboard = () => {
-  const [dashboardData, setDashboardData] = useState({ totalSellers: 0, totalBuyers: 0, totalProducts: 0 });
+  const [dashboardData, setDashboardData] = useState({
+    totalSellers: 0,
+    totalBuyers: 0,
+    totalProducts: 0,
+    totalSales: 0 
+  });
   const { user, isAuthenticated } = useAuth(); // Use context to get authenticated user info
 
   useEffect(() => {
@@ -43,6 +48,10 @@ const AdminDashboard = () => {
           <h3>Total Products</h3>
           <p>{dashboardData.totalProducts}</p>
         </div>
+        <div className="dashboard-item">
+          <h3>Total Sales</h3>
+          <p>Rs{dashboardData.totalSales.toFixed(2)}</p>
+        </div>
       </div>
       <div className="admin-actions">
         <Link to="/product-approval" className="admin-link">
@@ -51,11 +60,14 @@ const AdminDashboard = () => {
         <Link to="/verify-seller" className="admin-link">
           Verify Seller
         </Link>
+        <Link to="/sellers-list" className="admin-link">
+          Seller Report
+        </Link>
         <Link to="/manage-products" className="admin-link">
           Manage Products
         </Link>
         <Link to="/manage-users" className="admin-link">
-        Manage Users
+          Manage Users
         </Link>
       </div>
     </div>

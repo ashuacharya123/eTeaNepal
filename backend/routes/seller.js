@@ -109,12 +109,14 @@ router.get('/dashboard', auth, async (req, res) => {
         // Get the total number of products listed by the seller
         const totalProducts = await Product.countDocuments({ seller: sellerId });
 
-        // Get the total sales for the seller
+        // Get the total sales for the seller from completed orders
         const orders = await Order.find({
-            'products.product': { $in: await Product.find({ seller: sellerId }).select('_id') }
+            'items.sellerId': sellerId,  // Ensure we're only looking at orders with this seller's products
+            status: 'Completed'          // Filter to include only completed orders
         });
 
-        const totalSales = orders.reduce((total, order) => total + order.totalAmount, 0);
+        // Calculate total sales
+        const totalSales = orders.reduce((total, order) => total + order.total, 0);
 
         // Get the list of products with their details
         const products = await Product.find({ seller: sellerId });
@@ -124,12 +126,12 @@ router.get('/dashboard', auth, async (req, res) => {
             totalSales,
             products: products.map(product => ({
                 name: product.name,
-                description:product.description,
+                description: product.description,
                 stock: product.stock,
                 finalPrice: product.price,
                 initialPrice: product.initialPrice,
                 image: product.image,
-                id:product._id
+                id: product._id
             }))
         });
     } catch (error) {
@@ -137,6 +139,7 @@ router.get('/dashboard', auth, async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
 
 
 // Add a new product (only for verified sellers)

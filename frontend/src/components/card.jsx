@@ -35,10 +35,13 @@ const Card = (props) => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Get token from local storage
-  const token = localStorage.getItem('x-auth-token');
 
   const buyNowFunction = (name, quantity, price) => {
+    if (!isAuthenticated) {
+      alert("Login first to perform this action 🫠")
+      navigate('/login');
+      return
+    }
     setBuyNow([name, quantity, price, delivery]);
   };
 

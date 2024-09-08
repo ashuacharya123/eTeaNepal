@@ -6,6 +6,62 @@ const auth = require('../middleware/auth');
 const adminAuth = require('../middleware/adminAuth'); // Middleware to check admin role
 const User = require("../models/User");
 const Notification = require('../models/Notification');
+const Order =require('../models/Order');
+
+// Get individual seller report
+router.get('/seller-report/:sellerId', auth, adminAuth, async (req, res) => {
+    try {
+        const { sellerId } = req.params;
+
+        // Get the seller details
+        const seller = await User.findById(sellerId);
+        if (!seller || seller.role !== 'seller') {
+            return res.status(404).json({ message: 'Seller not found' });
+        }
+
+        // Get the seller's products
+        const products = await Product.find({ seller: sellerId });
+
+        // Get the seller's completed orders
+        const orders = await Order.find({
+            'items.sellerId': sellerId,
+            status: 'Completed'
+        });
+
+        // Calculate total sales and number of orders
+        const totalSales = orders.reduce((total, order) => total + order.total + order.delivery, 0);
+        const numberOfOrders = orders.length;
+
+        // Prepare the report
+        const report = {
+            seller: {
+                name: seller.name,
+                email: seller.email
+            },
+            totalSales,
+            numberOfOrders,
+            products: products.map(product => ({
+                name: product.name,
+                stock: product.stock,
+                price: product.price,
+                initialPrice: product.initialPrice,
+                image: product.image,
+                id: product._id
+            })),
+            orders: orders.map(order => ({
+                orderId: order._id,
+                total: order.total,
+                delivery: order.delivery,
+                orderedAt: order.orderedAt
+            }))
+        };
+
+        res.status(200).json(report);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
 
 // Route to get pending (unverified) products
 router.get('/products/pending', auth, adminAuth, async (req, res) => {
@@ -21,7 +77,6 @@ router.get('/products/pending', auth, adminAuth, async (req, res) => {
 // Admin dashboard data route
 router.get('/dashboard', [auth, adminAuth], async (req, res) => {
     try {
-
         // Get total sellers
         const totalSellers = await User.countDocuments({ role: 'seller' });
 
@@ -31,14 +86,19 @@ router.get('/dashboard', [auth, adminAuth], async (req, res) => {
         // Get total products
         const totalProducts = await Product.countDocuments();
 
-        // Return the counts to the frontend
-        res.json({ totalSellers, totalBuyers, totalProducts });
+        // Get total sales from completed orders
+        const completedOrders = await Order.find({ status: 'Completed' });
+
+        // Calculate total sales
+        const totalSales = completedOrders.reduce((total, order) => total + order.total, 0);
+
+        // Return the counts and total sales to the frontend
+        res.json({ totalSellers, totalBuyers, totalProducts, totalSales });
     } catch (error) {
         console.error(error.message);
         res.status(500).send('Server error');
     }
 });
-
 // Verify a product
 router.put('/verify/product/:id', [auth, adminAuth], async (req, res) => {
     try {

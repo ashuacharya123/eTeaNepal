@@ -55,5 +55,40 @@ router.get("/seller", auth, async (req, res) => {
   }
 });
 
+// Update order status
+router.put('/:orderId/status', auth, async (req, res) => {
+  try {
+      const { orderId } = req.params;
+      const { status } = req.body;
+
+      // Ensure the status is either 'Pending' or 'Completed'
+      if (status !== 'Pending' && status !== 'Completed') {
+          return res.status(400).json({ message: 'Invalid status value' });
+      }
+
+      // Find the order
+      const order = await Order.findById(orderId);
+
+      if (!order) {
+          return res.status(404).json({ message: 'Order not found' });
+      }
+
+      // Ensure the user is the seller of the order's items
+      const isSeller = order.items.some(item => item.sellerId.toString() === req.user.id);
+      if (!isSeller) {
+          return res.status(403).json({ message: 'Unauthorized: You are not the seller of this order' });
+      }
+
+      // Update the order status
+      order.status = status;
+      await order.save();
+
+      res.status(200).json({ message: 'Order status updated successfully', order });
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 module.exports = router;

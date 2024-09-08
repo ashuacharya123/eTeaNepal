@@ -127,7 +127,7 @@ const SellerDashboard = () => {
       </div>
       <div className="dashboard-actions">
         <Link to="/add-product" className="btn btn-primary">Add a Product</Link>
-        <Link to="/view-orders" className="btn btn-info">View Orders</Link>
+        <Link to="/seller-orders" className="btn btn-info">View Orders</Link>
       </div>
       <div className="dashboard-products">
         {products && products.map((product) => (
