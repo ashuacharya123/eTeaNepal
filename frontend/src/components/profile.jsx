@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../helper/context';
 
@@ -74,6 +74,12 @@ const Profile = () => {
         },
       });
       setUserData(response.data);
+      const { avatar, role, name, address, mobileNumber } = response.data;
+        localStorage.setItem('avatar', avatar);
+        localStorage.setItem('name', name);
+        localStorage.setItem('role', role);
+        if(address){localStorage.setItem('address', address)}else{localStorage.setItem('address', "")}
+        if(mobileNumber){localStorage.setItem('mobileNumber', mobileNumber)}else{localStorage.setItem('mobileNumber', "")}
       alert("Successfully changed the details");
     } catch (error) {
       setError('Failed to update details. Please try again.');
@@ -159,6 +165,7 @@ const handleDeleteAccount = async () => {
         <button onClick={() => setEditDetails(true)}>Change Details</button>
         <button onClick={() => setEditPassword(true)}>Change Password</button>
         <button onClick={handleDeleteAccount}>Delete Account</button>
+        <Link to="/orders">View Orders</Link>
         <button onClick={handleLogout}>Logout</button>
       </div>
       {editPassword && (

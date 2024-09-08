@@ -1,13 +1,21 @@
 import React, { useContext, useEffect } from "react";
 import { cartContext, buy } from "../helper/context";
+import { useAuth } from '../helper/context';
 import tea from "../Assets/teabag.png";
-import axios from "axios"
+import { useNavigate } from 'react-router-dom';
 
 const Card = (props) => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  
   // Extract data from props
-  const { name, price, description, stock, ratingCount, image } = props.props;
-  let { rating } = props.props;
+  const { name, price, description, stock, ratingCount } = props.props;
+  let { rating,image } = props.props;
   if (rating) rating = parseFloat(rating.toFixed(1)); // Formatting rating
+  if(!rating) rating=0;
+  if(!image){
+    image=""
+  }
 
   // const image = tea;
   const quantity = 1;
@@ -35,6 +43,11 @@ const Card = (props) => {
   };
 
   const updateCart = async () => {
+if(!isAuthenticated){
+  alert("Please login first to perform this action")
+  navigate('/login')
+  return
+}
     let newCart = cart || [];
     let itemFound = false;
     let totalQty = 0;
@@ -55,18 +68,7 @@ const Card = (props) => {
     setCart(newCart);
     localStorage.setItem('cart', JSON.stringify(newCart));
 
-    try {
-      await axios.post('http://localhost:8000/api/cart/save-cart', {
-        items: newCart,
-        totalQuantity: totalQty
-      }, {
-        headers: {
-          'x-auth-token': token
-        }
-      });
-    } catch (error) {
-      console.error('Failed to update cart on the server:', error);
-    }
+    
   };
 
   return (
@@ -74,7 +76,7 @@ const Card = (props) => {
       <div className="shop__container__content__card__container">
         <div id="hoverDescription"><b>Description</b>{description}</div>
         <div className="shop__container__content__card__container__card__image">
-          <img src={image.length === 0 ? tea : `http://localhost:8000/public/${image}`} alt="tea" />
+          <img src={image === "" ? tea : `http://localhost:8000/public/${image}`} alt="tea" />
         </div>
         <h3 className="asl mb1 rating">
           <b>{rating}</b>

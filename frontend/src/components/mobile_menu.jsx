@@ -74,6 +74,7 @@ const Mobile_menu = () => {
       <a
         href="#explore"
         className="clickAnimation"
+        id={localStorage.getItem("role") === "seller" || localStorage.getItem("role") === "admin"?"dn":""}
         onClick={() => handleNavigationAndScroll('/', 'explore')}
       >
         <div className={(move > 12) && (move < 45) ? "active" : ""}>
@@ -83,7 +84,7 @@ const Mobile_menu = () => {
       </a>
       <a
         href="#cart"
-        id={trigger % 2 === 0 ? "trigger" : ""}
+        id={localStorage.getItem("role") === "seller" || localStorage.getItem("role") === "admin"?"dn":""}
         className={trigger % 2 !== 0 ? "trigger clickAnimation" : "clickAnimation"}
         onClick={() => setCartShow(prev => !prev)}
       >
@@ -92,6 +93,7 @@ const Mobile_menu = () => {
       </a>
       <a
         href="#shop"
+        id={localStorage.getItem("role") === "seller" || localStorage.getItem("role") === "admin"?"dn":""}
         className="clickAnimation"
         onClick={() => handleNavigationAndScroll('/', 'shop')}
       >
@@ -103,6 +105,7 @@ const Mobile_menu = () => {
       <a
         href="#contact"
         className="clickAnimation"
+        id={localStorage.getItem("role") === "seller" || localStorage.getItem("role") === "admin"?"dn":""}
         onClick={() => handleNavigationAndScroll('/', 'contact')}
       >
         <div className={move > 85 ? "active" : ""}>

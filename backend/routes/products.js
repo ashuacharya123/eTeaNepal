@@ -33,12 +33,30 @@ const uploadFields = upload.fields([
 ]);
 
 
-// Get all products
+// Get all verified products with sorting options
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find();
-        res.json(products);
+        const { sort } = req.query;
 
+        // Define sorting options
+        let sortOptions = {};
+        if (sort === 'price-asc') {
+            sortOptions = { price: 1 };
+        } else if (sort === 'price-desc') {
+            sortOptions = { price: -1 };
+        } else if (sort === 'rating-asc') {
+            sortOptions = { rating: 1 };
+        } else if (sort === 'rating-desc') {
+            sortOptions = { rating: -1 };
+        } else if (sort === 'newest') {
+            sortOptions = { createdAt: -1 };
+        } else if (sort === 'oldest') {
+            sortOptions = { createdAt: 1 };
+        }
+
+        // Fetch only verified products with sorting
+        const products = await Product.find({ verified: true }).sort(sortOptions);
+        res.json(products);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
@@ -60,26 +78,26 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Update an existing product (only for sellers)
+// Update an existing product (for sellers and admins)
 router.put('/:id', auth, uploadFields, async (req, res) => {
     const { id } = req.params; // Product ID
     const { name, description, price, stock, initialPrice } = req.body;
 
     try {
-        // Ensure user is a seller
-        const requestedUser = await User.findById(req.user.id);
-        if (requestedUser.role !== 'seller') {
-            return res.status(401).json({ msg: 'User not authorized' });
-        }
-
         // Find the product to be updated
         const product = await Product.findById(id);
         if (!product) {
             return res.status(404).json({ msg: 'Product not found' });
         }
 
-        // Check if the product belongs to the seller
-        if (product.seller.toString() !== req.user.id) {
+        // Ensure user is authorized (seller or admin)
+        const requestedUser = await User.findById(req.user.id);
+        if (requestedUser.role !== 'seller' && requestedUser.role !== 'admin') {
+            return res.status(401).json({ msg: 'User not authorized' });
+        }
+
+        // Check if the product belongs to the seller (only if the user is a seller)
+        if (requestedUser.role === 'seller' && product.seller.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'User not authorized' });
         }
 

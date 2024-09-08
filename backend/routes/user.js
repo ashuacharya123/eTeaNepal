@@ -31,8 +31,8 @@ const uploadFields = upload.fields([{ name: 'panCardDocument', maxCount: 1 },
 
 
 
-//Update the rating of a product
-router.put('/product/rating',auth,async (req, res) => {
+// Update the rating of a product
+router.put('/product/rating', auth, async (req, res) => {
     try {
         const { productId, newRating } = req.body;
 
@@ -47,8 +47,8 @@ router.put('/product/rating',auth,async (req, res) => {
             return res.status(403).json({ message: 'Unauthorized: Only buyers can rate products' });
         }
 
-           // Check if the user has already rated this product
-           if (user.ratedProducts.includes(productId)) {
+        // Check if the user has already rated this product
+        if (user.ratedProducts.includes(productId)) {
             return res.status(400).json({ message: 'You have already rated this product' });
         }
 
@@ -66,19 +66,24 @@ router.put('/product/rating',auth,async (req, res) => {
         // Update the product with the new rating and rating count
         product.rating = updatedRating;
         product.ratingCount = updatedRatingCount;
-
+        
         // Save the updated product
         await product.save();
+        
+        // Update the user to record that they have rated this product and the rating value
+        user.ratedProducts.push({ productId, rating: newRating });
+        await user.save();
+        
 
-         // Update the user to record that they have rated this product
-         user.ratedProducts.push(productId);
-         await user.save();
-
-        res.status(200).json({ message: 'Product rating updated successfully', product });
+        res.status(200).json({
+            message: 'Product rating updated successfully',
+            ratedProducts: user.ratedProducts,
+        });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error', error });
     }
 });
+
 
 // @route    GET api/users/me
 // @desc     Get current user's details

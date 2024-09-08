@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { cartContext, showCart, buy } from "../helper/context";
+import axios from 'axios'; // Import axios for API calls
 import close from "../Assets/icons/close.svg";
 import deleteIcon from "../Assets/icons/delete.svg";
-import tea from "../Assets/teabag.png"
+import tea from "../Assets/teabag.png";
 
 const Cart = () => {
   const { cart, setCart } = useContext(cartContext);
@@ -19,11 +20,6 @@ const Cart = () => {
     }
   }, [setCart]);
 
-  // Update localStorage whenever the cart state changes
-  // useEffect(() => {
-  //   localStorage.setItem('cart', JSON.stringify(cart));
-  // }, [cart]);
-
   let totalPrice = 0;
 
   const data = cart.filter(item => item[0].quantity > 0).map(item => {
@@ -35,11 +31,13 @@ const Cart = () => {
 
   const itemQuantity = (sign, image, price, cutPrice, discount, name) => {
     const updatedCart = cart.map(item => {
-      if (item[0].image === image &&
-          item[0].price === price &&
-          item[0].cutPrice === cutPrice &&
-          item[0].discount === discount &&
-          item[0].name === name) {
+      if (
+        item[0].image === image &&
+        item[0].price === price &&
+        item[0].cutPrice === cutPrice &&
+        item[0].discount === discount &&
+        item[0].name === name
+      ) {
         if (sign === "+") {
           item[0].quantity += 1;
           item[0].totalQuantity += 1;
@@ -56,16 +54,62 @@ const Cart = () => {
 
   const deleteItem = (image, price, cutPrice, discount, name) => {
     const updatedCart = cart.filter(item => {
-      return !(item[0].image === image &&
-               item[0].price === price &&
-               item[0].cutPrice === cutPrice &&
-               item[0].discount === discount &&
-               item[0].name === name);
+      return !(
+        item[0].image === image &&
+        item[0].price === price &&
+        item[0].cutPrice === cutPrice &&
+        item[0].discount === discount &&
+        item[0].name === name
+      );
     });
 
     setCart(updatedCart);
   };
 
+  const handleOrder = async () => {
+    const address = localStorage.getItem("address");
+    const mobileNumber = localStorage.getItem("mobileNumber");
+  
+    if (!address || !mobileNumber || address === "" || mobileNumber === "") {
+      alert("Please add your mobile number and address before proceeding.");
+      window.location.href = "/profile";
+      return;
+    }
+  
+    try {
+    
+      const orderData = {
+        items: cart.map(item => ({
+          name: item[0].name,
+          product: item[0]._id,
+          quantity: item[0].quantity,
+          sellerId: item[0].seller,  // Add sellerId
+          price: item[0].price          // Add price
+        })),
+        total: totalPrice,
+        delivery: 100, // Example delivery charge
+        address,
+        mobileNumber
+      };
+  
+      const response = await axios.post("/api/orders", orderData, {
+        headers: {
+          'x-auth-token': localStorage.getItem('x-auth-token'),
+        }
+      });
+  
+      if (response.status === 201) {
+        alert("Order placed successfully!");
+        setCart([]);
+        localStorage.removeItem('cart');
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Failed to place order. Please try again later.");
+    }
+  };
+  console.log(cart)
+  
 
   return (
     <div
@@ -93,8 +137,8 @@ const Cart = () => {
             <div key={d.name} className="cart__container__content">
               <div className="cart__container__content__upper">
                 <div className="cart__container__content__upper__image">
-                  {!d.image?(d.image=""):""}
-                <img src={d.image.length === 0 ? tea : `http://localhost:8000/public/${d.image}`} alt="" />
+                  {!d.image ? (d.image = "") : ""}
+                  <img src={d.image.length === 0 ? tea : `http://localhost:8000/public/${d.image}`} alt="" />
                 </div>
                 <div className="cart__container__content__upper__details">
                   <span>
@@ -132,42 +176,22 @@ const Cart = () => {
         )}
       </div>
 
-      <div
-        className="checkout cart__container__content__lower"
-        id={checkout || buyNow.length > 0 ? "" : "dn"}
-      >
-        <span>
-          <h6>Order Details</h6>
-          <h6>Quantity</h6>
-        </span>
-        {data.map(d => (
-          <span key={d.name} id={buyNow.length > 0 ? "dn" : ""}>
-            <h6>{buyNow.length > 0 ? buyNow[0] : d.name}</h6>
-            <h6>X{buyNow.length > 0 ? buyNow[1] : d.quantity}</h6>
-          </span>
-        ))}
-        <span id={buyNow.length > 0 ? "" : "dn"}>
-          <h6>{buyNow.length > 0 ? buyNow[0] : ""}</h6>
-          <h6>X{buyNow.length > 0 ? buyNow[1] : ""}</h6>
-        </span>
-      </div>
-
       <div className="cart__container__content__lower">
         <hr />
         <span>
           <h6>Total</h6>
           <h5>
-            ${buyNow.length > 0 ? buyNow[2] : totalPrice ? totalPrice : "0.00"}
+            Rs {buyNow.length > 0 ? buyNow[2] : totalPrice ? totalPrice : "0.00"}
           </h5>
         </span>
         <span>
           <h6>Delivery</h6>
-          <h5>$100</h5>
+          <h5>Rs 100</h5>
         </span>
         <span>
           <h6>Sub-Total</h6>
           <h5>
-            ${buyNow.length > 0 ? buyNow[2] : totalPrice ? totalPrice : "0.00"}
+            Rs {buyNow.length > 0 ? buyNow[2] : totalPrice ? totalPrice : "0.00"}
           </h5>
         </span>
         <span>
@@ -180,7 +204,7 @@ const Cart = () => {
           >
             Cancel
           </button>
-          <button>
+          <button onClick={handleOrder}>
             <label htmlFor="btn">{checkout ? "Order Now" : "Checkout"}</label>
           </button>
         </span>

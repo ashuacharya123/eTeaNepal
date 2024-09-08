@@ -69,14 +69,14 @@ router.get('/compare-products', async (req, res) => {
 // Route to calculate and list top 10 products
 router.get('/top-products', async (req, res) => {
     try {
-        // Fetch all products from the database
-        const products = await Product.find();
+        // Fetch all verified products from the database
+        const products = await Product.find({ verified: true });
 
         if (products.length === 0) {
             return res.status(404).send('No products found');
         }
 
-        // Find the maximum price among the products
+        // Find the maximum price among the verified products
         const maxPrice = Math.max(...products.map(product => product.price));
 
         // Calculate weighted scores for each product
@@ -140,6 +140,7 @@ router.get('/top-products', async (req, res) => {
 
 
 
+
 // Implementing Boyer-Moore Algorithm for search
 function boyerMooreSearch(text, pattern) {
     const m = pattern.length;
@@ -168,11 +169,15 @@ function boyerMooreSearch(text, pattern) {
 router.get('/search', async (req, res) => {
     const { query } = req.query;
     try {
-        const products = await Product.find();
+        // Fetch only verified products
+        const products = await Product.find({ verified: true });
+
+        // Filter products based on search query
         const matchedProducts = products.filter(product => 
             boyerMooreSearch(product.description.toLowerCase(), query.toLowerCase()) !== -1 || 
             boyerMooreSearch(product.name.toLowerCase(), query.toLowerCase()) !== -1
         );
+
         res.json(matchedProducts);
     } catch (err) {
         console.error(err.message);

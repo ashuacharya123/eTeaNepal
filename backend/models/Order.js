@@ -1,21 +1,23 @@
+// models/Order.js
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  buyerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  products: [
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  items: [
     {
-      productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
       quantity: { type: Number, required: true },
       price: { type: Number, required: true },
-      sellerTotal: { type: Number, required: true },
-    },
+      sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Seller', required: true },
+      name:{type:String, required: true}
+    }
   ],
-  orderTotal: { type: Number, required: true },
-  deliveryStatus: { type: String, enum: ['Pending', 'Shipped', 'Delivered'], default: 'Pending' },
-  orderDate: { type: Date, default: Date.now },
-  deliveryDate: { type: Date },
-  paymentStatus: { type: String, enum: ['Paid', 'Unpaid'], default: 'Unpaid' },
-});
+  total: { type: Number, required: true },
+  delivery: { type: Number, default: 0 },  // Default delivery charge
+  status: { type: String, enum: ['Pending', 'Completed'], default: 'Pending' },
+  address: { type: String, required: true  },
+    mobileNumber: { type: Number, required: true  },
+  orderedAt: { type: Date, default: Date.now }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Order', orderSchema);

@@ -139,23 +139,20 @@ router.get('/dashboard', auth, async (req, res) => {
 });
 
 
-// Add a new product (only for sellers)
+// Add a new product (only for verified sellers)
 router.post('/product', auth, uploadFields, async (req, res) => {
     const { name, description, price, stock, initialPrice } = req.body;
 
-    // Ensure user is a seller
-    const requestedUser = await User.find({ _id: req.user.id });
-
-    if (requestedUser[0].role !== 'seller') {
-        return res.status(401).json({ msg: 'User not authorized' });
-    }
-
-    console.log(req.body);
-
-    // Check if the product image file is uploaded
-    const productImage = req.files && req.files.productImage && req.files.productImage[0] ? req.files.productImage[0].filename : null;
-
     try {
+        // Ensure user is a verified seller
+        const user = await User.findById(req.user.id);
+        if (user.role !== 'seller' || !user.verified) {
+            return res.status(401).json({ msg: 'User not authorized or not verified' });
+        }
+
+        // Check if the product image file is uploaded
+        const productImage = req.files?.productImage?.[0]?.filename || null;
+
         const newProduct = new Product({
             name,
             description,
@@ -182,5 +179,6 @@ router.post('/product', auth, uploadFields, async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
 
 module.exports = router;

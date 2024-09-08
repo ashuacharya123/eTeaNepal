@@ -37,6 +37,7 @@ const LoginSignup = () => {
         email: formData.email,
         password: formData.password
       });
+      localStorage.clear()
       login(response.data['token']);
     
 
@@ -48,10 +49,13 @@ const LoginSignup = () => {
             'x-auth-token': localStorage.getItem('x-auth-token'),
           },
         });
-        const { avatar, role, name } = response.data;
+        const { avatar, role, name, address, mobileNumber,ratedProducts } = response.data;
         localStorage.setItem('avatar', avatar);
         localStorage.setItem('name', name);
         localStorage.setItem('role', role);
+        if(address){localStorage.setItem('address', address)}else{localStorage.setItem('address', "")}
+        if(mobileNumber){localStorage.setItem('mobileNumber', mobileNumber)}else{localStorage.setItem('mobileNumber', "")}
+        localStorage.setItem('ratedProducts', JSON.stringify(ratedProducts));
       } catch (error) {
         
       }

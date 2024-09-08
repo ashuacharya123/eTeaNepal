@@ -14,10 +14,10 @@ const Hero = () => {
   const yOffset = 10;
   return (
     <div className="hero__container" id="home">
-      {/* <MobileMenu /> */}
+
 
       <div className="hero__content ">
-        {/* <Navbar/> */}
+
         
         <div className="hero__upper ">
           <h2 className="hero__upper__text" id="margin">
@@ -34,7 +34,7 @@ const Hero = () => {
             <button className="ml2 btn-primary">Shop Now</button>
           {/* </Link> */}
           </ScrollLink>
-          <Link to="/best_deals">
+          <Link to="/best-deals">
             <button className="ml2 clickAnimation" id="btn-secondary">Best Deals</button>
           </Link>
           </div>

@@ -12,7 +12,6 @@ const sendEmail = (email, subject, message) => {
       html: `<b>${message}</b>`,
   };
   sgMail.send(msg).then(() => {
-    console.log("Message sent: %s", info.messageId);
   }).catch((error) => {
       console.error(error);
   });

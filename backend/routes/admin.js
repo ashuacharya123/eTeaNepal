@@ -7,6 +7,38 @@ const adminAuth = require('../middleware/adminAuth'); // Middleware to check adm
 const User = require("../models/User");
 const Notification = require('../models/Notification');
 
+// Route to get pending (unverified) products
+router.get('/products/pending', auth, adminAuth, async (req, res) => {
+    try {
+      const pendingProducts = await Product.find({ verified: false });
+      res.json(pendingProducts);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+  });
+
+// Admin dashboard data route
+router.get('/dashboard', [auth, adminAuth], async (req, res) => {
+    try {
+
+        // Get total sellers
+        const totalSellers = await User.countDocuments({ role: 'seller' });
+
+        // Get total buyers
+        const totalBuyers = await User.countDocuments({ role: 'buyer' });
+
+        // Get total products
+        const totalProducts = await Product.countDocuments();
+
+        // Return the counts to the frontend
+        res.json({ totalSellers, totalBuyers, totalProducts });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server error');
+    }
+});
+
 // Verify a product
 router.put('/verify/product/:id', [auth, adminAuth], async (req, res) => {
     try {
@@ -36,6 +68,30 @@ router.put('/verify/product/:id', [auth, adminAuth], async (req, res) => {
     }
 });
 
+// Fetch all users except admins
+router.get('/all-users', auth, async (req, res) => {
+    try {
+        // Fetch all users except those with the role 'admin'
+        const users = await User.find({ role: { $ne: 'admin' } }).select('name email role');
+        res.json(users);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+// Get all sellers
+router.get('/sellers', [auth, adminAuth], async (req, res) => {
+    try {
+        const sellers = await User.find({ role: 'seller' }).select('-password');
+        res.json(sellers);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
+
 // Verify a seller
 router.put('/verify/seller/:id', [auth, adminAuth], async (req, res) => {
     try {
@@ -63,7 +119,7 @@ router.put('/verify/seller/:id', [auth, adminAuth], async (req, res) => {
 
 
 // Change Role to admin
-router.put('/change-role/:userId', [auth, adminAuth], async (req, res) => {
+router.put('/make-admin/:userId', [auth, adminAuth], async (req, res) => {
     const { userId } = req.params;
 
     try {

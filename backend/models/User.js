@@ -11,7 +11,7 @@ const UserSchema = new Schema({
     panCardDocument: { type: String }, // Store path or URL of the uploaded PAN card document
     businessName: { type: String },
     businessAddress: { type: String },
-    address: { type: String }, //for buyer
+    address: { type: String },
     mobileNumber: { type: Number },
     verified: { type: Boolean, default: false },
     otp: {
@@ -22,7 +22,12 @@ const UserSchema = new Schema({
         type: Number,
         required: false
     },
-    ratedProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+    ratedProducts: [
+        {
+            productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+            rating: { type: Number, required: true }
+        }
+    ],
     avatar: { type: String },
     date: {
         type: Date,
