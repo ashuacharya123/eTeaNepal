@@ -71,14 +71,16 @@ const OrderPage = () => {
   };
 
   return (
-    <div>
-      <h2>Hi, {user}</h2>
+    <div className="orders__container">
+      <div className="orders__container__content">
+      <h1>Hi, <span>{user}</span></h1>
       {orders.map((order, index) => (
-        <div key={index} className="order">
+        <div key={index} className="orders__container__content__order">
           {order.items.map((item, idx) => (
             <div key={idx} className="order-item">
               <h3>{item.name}</h3>
               <p>Ordered on {new Date(order.createdAt).toLocaleDateString()}</p>
+              <p>Quantity: {item.quantity}</p>
               <p>Order Total Rs{order.total}</p>
 
               {/* Rating */}
@@ -97,6 +99,7 @@ const OrderPage = () => {
           ))}
         </div>
       ))}
+    </div>
     </div>
   );
 };

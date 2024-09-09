@@ -10,6 +10,8 @@
 @import "./sass/footer";
 @import "./sass/cart";
 @import "./sass/compare-products";
+@import "./sass/profile";
+@import "./sass/orders";
 
 
 
@@ -69,10 +71,10 @@ $lightGreen:#5DB646;
 .clickAnimation{
   transition: all 0.5s;
   &:hover{
-    scale: 1.03;
+    scale: 1.2;
   }
   &:active{
-    transform: scale(0.95);
+    transform: scale(0.5);
   }
 }
 
@@ -157,6 +159,15 @@ input, button {
 }
 .mr2 {
   margin-right: 2.5rem;
+}
+
+.btn{
+  padding: 1rem 1.5rem;
+    font-family: inherit;
+    background-color: $lightGreen;
+    color: $white;
+    border: none;
+    border-radius:0.5rem;
 }
 
 .nav-btn{

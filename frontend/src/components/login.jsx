@@ -12,7 +12,6 @@ const LoginSignup = () => {
     name: '', // For signup
     confirmPassword: '' // For signup
   });
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false); // Loading state
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -66,16 +65,15 @@ const LoginSignup = () => {
           }
           localStorage.setItem('ratedProducts', JSON.stringify(ratedProducts));
           localStorage.setItem('id', _id);
-          window.location.reload();
         } catch (error) {
           // Handle error if needed
         }
       };
 
       await fetchUserData();
-      navigate('/'); // Redirect to home page or any other page
+      window.location.href = '/'; // Hard refresh and redirect to home page
     } catch (error) {
-      setError('Login failed. Please check your credentials.');
+      alert('Login failed. Please check your credentials.');
     } finally {
       setLoading(false); // Stop loading
     }
@@ -83,7 +81,7 @@ const LoginSignup = () => {
 
   const handleSignup = async () => {
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.");
+      alert("Passwords do not match.");
       return;
     }
     setLoading(true); // Start loading
@@ -95,7 +93,7 @@ const LoginSignup = () => {
       });
       navigate('/verify-otp'); // Redirect to verify OTP page
     } catch (error) {
-      setError('Signup failed. Please check your details.');
+      alert('Signup failed. Please check your details.');
     } finally {
       setLoading(false); // Stop loading
     }
@@ -191,7 +189,6 @@ const LoginSignup = () => {
                 {isSignup ? 'Signup' : 'Login'}
               </button>
               {loading && <div className="loading">Loading...</div>} {/* Loading spinner */}
-              {error && <p className="error">{error}</p>}
               <div>
                 {isSignup ? (
                   <p>Already signed up? <a href="#" onClick={handleSwitchToLogin}>Login</a></p>

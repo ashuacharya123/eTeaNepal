@@ -36,14 +36,14 @@ const Card = (props) => {
   }, [cart]);
 
 
-  const buyNowFunction = (name, quantity, price) => {
-    if (!isAuthenticated) {
-      alert("Login first to perform this action 🫠")
-      navigate('/login');
-      return
-    }
-    setBuyNow([name, quantity, price, delivery]);
-  };
+  // const buyNowFunction = (name, quantity, price) => {
+  //   if (!isAuthenticated) {
+  //     alert("Login first to perform this action 🫠")
+  //     navigate('/login');
+  //     return
+  //   }
+  //   setBuyNow([name, quantity, price, delivery]);
+  // };
 
   const updateCart = async () => {
 if(!isAuthenticated){
@@ -95,9 +95,9 @@ if(!isAuthenticated){
             <h6>{name}</h6>
             {/* <p>{description}</p> */}
             <button onClick={updateCart}>Add to cart</button>
-            <button onClick={() => buyNowFunction(name, quantity, price)}>
+            {/* <button onClick={() => buyNowFunction(name, quantity, price)}>
               Buy now
-            </button>
+            </button> */}
           </span>
         </div>
       </div>

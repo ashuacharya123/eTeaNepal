@@ -1,0 +1,83 @@
+$baseColor: #e7d400;
+$bodyColor: #e3efed;
+$white: #ffffff;
+$green: #5e905d;
+$lightGreen: #5db646;
+
+.profile__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.profile__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  gap: 5rem;
+
+  h1 {
+    font-weight: 300;
+    font-size: 2.5rem;
+    text-align: center;
+    span {
+      display: block;
+      font-size: 5rem;
+    }
+  }
+
+  .profile__details {
+    &__content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: black;
+      padding: 3rem 5rem;
+      border-radius: 2rem;
+      color: $white;
+      gap: 2rem;
+
+      &__edit {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: black;
+        gap: 1rem;
+        color: $white;
+        padding: 3rem 5rem;
+        border-radius: 2rem;
+        label {
+          font-size: 1.2rem;
+        }
+        input {
+          width: 100%;
+          padding: 0.5rem;
+          border: 1px solid $white;
+          border-radius: 0.2rem;
+          color: white;
+          background-color: transparent;
+          &::placeholder {
+            color: white;
+            background-color: transparent;
+            opacity: 0.5;
+          }
+        }
+        button {
+            margin-top: 1rem;
+          width: 100%;
+
+          &:nth-last-of-type(1){
+            background-color:transparent;
+            border: 1px solid $white;
+          }
+        }
+      }
+    }
+  }
+}
