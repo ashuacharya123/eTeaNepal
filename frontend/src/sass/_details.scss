@@ -1,0 +1,44 @@
+// todo : Details Section
+.details__container {
+    &__content {
+      &__text {
+        color: $green;
+        font-size: 2.8rem;
+        font-weight: 500;
+        line-height: 4rem;
+  
+        @media screen and (max-width: 330px) {
+          margin-bottom: 2rem;
+          margin-top: -3.5rem;
+        }
+      }
+      &__image {
+        margin-top: -17rem;
+        // width: 100%;
+        position: relative;
+        &::before {
+          content: "Our own garden";
+          color: $white;
+          font-size: 1.8rem;
+          top: 72%;
+          left: 20%;
+          position: absolute;
+        }
+  
+        img {
+          margin-inline: auto;
+          @media screen and (max-width: 756px) {
+            width: 95%;
+          }
+          object-fit: cover;
+        }
+      }
+      &__paragraph {
+        margin-top: -10rem;
+        margin-bottom: 3rem;
+        line-height: 3.5rem;
+        font-size: 1.8rem;
+        font-weight: 300;
+      }
+    }
+  }

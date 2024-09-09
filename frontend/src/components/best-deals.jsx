@@ -23,10 +23,12 @@ const BestDeals = () => {
     }, []);  
 
     return (
-        <div className="best-deals">
-            <h1>Best Deals</h1>
+        <div className="best-deals" style={{
+           marginTop:'12rem'
+          }}>
+            <h1 className='heading-text'>Best Deals</h1>
             {loading ? (
-                <p>Loading...</p>  // Show loading message while fetching data
+                <p className="loading">Loading...</p>  // Show loading message while fetching data
             ) : (
                     <div className="shop__container ml2 mr2">
                     {topProducts.map(product => (

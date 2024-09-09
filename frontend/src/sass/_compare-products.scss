@@ -1,0 +1,58 @@
+
+
+.compare-products {
+  margin-top: 15rem;
+  height: 50vh;
+  @media screen and (max-width: 656px) {
+    margin-top: 5rem;
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin-top: 2rem;
+
+    h2 {
+      font-size: 2.5rem;
+    }
+
+    &__wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 2rem;
+
+      &__products {
+        align-self: baseline;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        label{
+            font-size:1.5rem;
+            font-weight:200;
+            
+        }
+
+        input{
+            margin-right: .5rem;
+            
+        }
+      }
+    }
+    button {
+      width: 100%;
+      font-family: inherit;
+      padding: 1rem;
+      font-size: 1.5rem;
+      border-radius: 1rem;
+      border: none;
+      background-color: $baseColor;
+    }
+  }
+}
+

@@ -88,7 +88,7 @@ const ManageUsers = () => {
                 onChange={handleSearchChange}
             />
             {loading ? (
-                <p>Loading...</p>
+                <p className="loading">Loading...</p>
             ) : (
                 filteredUsers.map(user => (
                     <div key={user._id} className="user-item">

@@ -4,7 +4,6 @@ import axios from 'axios';
 const CompareProducts = () => {
     const [products, setProducts] = useState([]);
     const [selectedProductIds, setSelectedProductIds] = useState([]);
-    const [comparisonData, setComparisonData] = useState(null);
     const [loading, setLoading] = useState(false);
 
     // Fetch all products
@@ -51,7 +50,15 @@ const CompareProducts = () => {
                 },
             });
 
-            setComparisonData(response.data);
+            // Display alert with comparison result
+            if (response.data && response.data.length > 0) {
+                const productNames = response.data.map(product => product.name);
+                const alertMessage = productNames.join(' IS BETTER VALUE FOR MONEY THAN '); 
+                alert(`${alertMessage}`);
+
+                // Clear selected product ids after comparison
+                setSelectedProductIds([]);
+            }
         } catch (error) {
             console.error('Error fetching comparison data:', error);
         }
@@ -61,43 +68,32 @@ const CompareProducts = () => {
 
     return (
         <div className="compare-products">
-            <h1>Compare Products</h1>
-            <div>
-                <h2>Select Products</h2>
+            <h1 className='heading-text'>Compare Products</h1>
+            <div className="compare-products__content">
+            <div className="compare-products__content__wrapper">
+                <h2>Choose Products</h2>
                 {products.length === 0 ? (
-                    <p>Loading products...</p>
+                    <p className="loading">Loading products...</p>
                 ) : (
                     products.map(product => (
-                        <div key={product._id}>
-                            <label>
+                        <div key={product._id} className='compare-products__content__wrapper__products'>
                                 <input
                                     type="checkbox"
+                                    id={product._id}
                                     checked={selectedProductIds.includes(product._id)}
                                     onChange={() => handleProductSelect(product._id)}
                                 />
+                            <label for={`${product._id}`}>
                                 {product.name}
                             </label>
                         </div>
                     ))
                 )}
-            </div>
             <button onClick={handleCompare} disabled={loading}>
                 {loading ? 'Comparing...' : 'Compare'}
             </button>
-            {comparisonData && (
-                <div className="comparison-results">
-                    <h2>Comparison Results</h2>
-                    {comparisonData.map((product, index) => (
-                        <div key={product._id} className="comparison-item">
-                            <h3>{index + 1}. {product.name}</h3>
-                            <p>Description: {product.description}</p>
-                            <p>Price: Rs {product.price}</p>
-                            <p>Stock: {product.stock}</p>
-                            {/* Add more product details here */}
-                        </div>
-                    ))}
-                </div>
-            )}
+            </div>
+        </div>
         </div>
     );
 };

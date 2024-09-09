@@ -1,0 +1,35 @@
+// todo : Health Section
+
+.health__container {
+    background-color: #6f6a66;
+    height: 100vh;
+    color: $white;
+    &__content {
+      height: 100%;
+      background-image: url(../Assets/mobile/Mobile_health_benifits.png);
+      background-repeat: no-repeat;
+      background-size: cover;
+  
+      background-attachment: fixed;
+  
+      &__text {
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+        opacity: 0.6;
+        font-size: 3.5rem;
+  
+        @media screen and (max-width: 382px) {
+          font-size: 3rem;
+        }
+      }
+  
+      &__health {
+        opacity: 0;
+        margin-left: 3rem;
+        height: 70%;
+        img {
+          height: 100%;
+        }
+      }
+    }
+  }

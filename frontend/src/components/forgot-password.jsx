@@ -49,11 +49,9 @@ const ForgotResetPassword = () => {
             <h1>{isForgotPassword ? 'Forgot Password' : 'Reset Password'}</h1>
           </div>
           <div className="login__container__content__lower">
-            <div className="login__container__content__lower__left">
-            </div>
-            <div className="login__container__content__lower__right">
+            <div className="login__container__content__lower__right" id="max-width100">
               {isForgotPassword ? (
-                <>
+                <div className="login__container__content__lower__right__fields">
                   <label htmlFor="email">Email</label>
                   <input
                     type="email"
@@ -63,9 +61,9 @@ const ForgotResetPassword = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                   <button onClick={handleForgotPassword}>Send OTP</button>
-                </>
+                </div>
               ) : (
-                <>
+                <div className="login__container__content__lower__right__fields">
                   <label htmlFor="email">Email</label>
                   <input
                     type="email"
@@ -91,22 +89,22 @@ const ForgotResetPassword = () => {
                     onChange={(e) => setNewPassword(e.target.value)}
                   />
                   <button onClick={handleResetPassword}>Reset Password</button>
-                </>
+                </div>
               )}
               {error && <p className="error">{error}</p>}
               <div>
                 {isForgotPassword ? (
                   <p>
-                    Remembered your password?{' '}
+                    Already received OTP?{' '}
                     <a href="#" onClick={handleSwitchToResetPassword}>
                       Reset Password
                     </a>
                   </p>
                 ) : (
                   <p>
-                    Forgot your password?{' '}
+                    OTP expired or not working?{' '}
                     <a href="#" onClick={handleSwitchToForgotPassword}>
-                      Send OTP
+                      Resend OTP
                     </a>
                   </p>
                 )}

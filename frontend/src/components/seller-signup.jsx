@@ -55,17 +55,15 @@ const SellerSignup = () => {
       <div className='login__container'>
         <div className="login__container__content">
           <div className="login__container__content__upper">
-            <h1>Seller Signup</h1>
+            <h1 className='heading-text'>Seller Signup</h1>
             <div>
                 <p>Already signed up? <Link to="/login">Login</Link></p>
               </div>
           </div>
           <div className="login__container__content__lower">
-            <div className="login__container__content__lower__left">
-              <img src={loginPhoto} alt="Seller Signup" />
-            </div>
             <div className="login__container__content__lower__right">
-              <div>
+              {/* <img src={loginPhoto} alt="Seller Signup" /> */}
+              <div className="login__container__content__lower__right__fields">
                 <label htmlFor="name">Name</label>
                 <input
                   type="text"
@@ -76,7 +74,7 @@ const SellerSignup = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div>
+              <div className="login__container__content__lower__right__fields">
                 <label htmlFor="businessName">Business Name</label>
                 <input
                   type="text"
@@ -87,7 +85,7 @@ const SellerSignup = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div>
+              <div className="login__container__content__lower__right__fields">
                 <label htmlFor="email">Email</label>
                 <input
                   type="email"
@@ -98,7 +96,7 @@ const SellerSignup = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div>
+              <div className="login__container__content__lower__right__fields">
                 <label htmlFor="businessAddress">Business Address</label>
                 <input
                   type="text"
@@ -109,7 +107,7 @@ const SellerSignup = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div>
+              <div className="login__container__content__lower__right__fields">
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
@@ -120,18 +118,12 @@ const SellerSignup = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div>
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="min. 8 characters"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
+             
+            </div>
+            <div className="login__container__content__lower__right">
+              
+              
+              <div className="login__container__content__lower__right__fields">
                 <label htmlFor="panCardNumber">PAN Card Number</label>
                 <input
                   type="text"
@@ -142,7 +134,18 @@ const SellerSignup = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div>
+              <div className="login__container__content__lower__right__fields">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="min. 8 characters"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="login__container__content__lower__right__fields">
                 <label htmlFor="panCardDocument">Upload PAN Card Document</label>
                 <input
                   type="file"
@@ -151,7 +154,7 @@ const SellerSignup = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div>
+              <div className="login__container__content__lower__right__fields">
                 <label htmlFor="mobileNumber">Mobile Number</label>
                 <input
                   type="text"

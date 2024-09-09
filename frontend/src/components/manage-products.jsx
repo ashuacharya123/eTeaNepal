@@ -158,7 +158,7 @@ const ManageProducts = () => {
           <h1>Manage Products</h1>
           <h2>Welcome, Ashish!</h2>
           {loading ? (
-            <p>Loading...</p>
+            <p className="loading">Loading...</p>
           ) : (
             <div className="product-list">
               {products.map(product => (

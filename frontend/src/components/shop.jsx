@@ -74,11 +74,16 @@ const Shop = () => {
         <div className="shop__controls">
           <input
             type="text"
-            placeholder="Search here"
+            placeholder="search here..."
             value={searchQuery}
             onChange={handleSearchChange}
           />
-          {searchLoading && <p>Searching...</p>}
+          <Link to="/compare-products" className="nav-btn">
+            <button >Compare Products</button>
+          </Link>
+          {searchLoading && <p className="loading">Searching...</p>}
+          <div className="shop__controls__sort">
+          <p>Sort by:</p>
           <select value={sortOption} onChange={handleSortChange}>
             <option value="Default">Default</option>
             <option value="price-asc">Price: Low to High</option>
@@ -88,12 +93,11 @@ const Shop = () => {
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
           </select>
-          <Link to="/compare-products">
-            <button>Compare Products</button>
-          </Link>
+          </div>
+          
         </div>
         {loading ? (
-          <p>Loading...</p>
+          <p className="loading">Loading...</p>
         ) : (
           cardList.map((card) => (
             <Card key={card._id} props={card} />
