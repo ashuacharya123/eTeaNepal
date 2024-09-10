@@ -61,51 +61,72 @@ const SellerOrder = () => {
   };
 
   return (
-    <div>
-      <h2>Seller Orders</h2>
-      {orders.length === 0 ? (
-        <p>No orders found for you.</p>
-      ) : (
-        orders.map((order) => (
-          <div key={order._id} className="order">
-            <h3>Order ID: {order._id}</h3>
-            <p>Buyer Name: {order.buyerName}</p>
-            <p>Ordered on: {new Date(order.orderedAt).toLocaleDateString()}</p>
-            <p>Address: {order.address}</p>
-            <p>Mobile Number: {order.mobileNumber}</p>
-            <p>Total: Rs {order.total + order.delivery}</p>
-            <p>Status: {order.status}</p>
+    <div className="seller-orders__container">
+      <h2 className="heading-text">Seller Orders</h2>
+      <div className="seller-orders__container__content">
+        {orders.length === 0 ? (
+          <p>No orders found for you.</p>
+        ) : (
+          orders.map((order) => (
+            <div
+              key={order._id}
+              className="seller-orders__container__content__order"
+            >
+              <h3>Order ID: {order._id}</h3>
+              <p>Buyer Name: {order.buyerName}</p>
+              <p>
+                Ordered on: {new Date(order.orderedAt).toLocaleDateString()}
+              </p>
+              <p>Address: {order.address}</p>
+              <p>Mobile Number: {order.mobileNumber}</p>
+              <p>Total: Rs {order.total + order.delivery}</p>
+              <p>Status: {order.status}</p>
 
-            {/* Status Update Form */}
-            {(userRole === 'seller' || userRole === 'admin') && (
-              <div>
-                <select 
-                  value={statusUpdate.orderId === order._id ? statusUpdate.status : order.status}
-                  onChange={(e) => setStatusUpdate({ orderId: order._id, status: e.target.value })}
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Completed">Completed</option>
-                </select>
-                <button onClick={() => handleStatusChange(order._id, statusUpdate.status)}>
-                  Update Status
-                </button>
+              {/* Status Update Form */}
+              {(userRole === "seller" || userRole === "admin") && (
+                <div>
+                  <select
+                    value={
+                      statusUpdate.orderId === order._id
+                        ? statusUpdate.status
+                        : order.status
+                    }
+                    onChange={(e) =>
+                      setStatusUpdate({
+                        orderId: order._id,
+                        status: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                  <button
+                    className="clickAnimation"
+                    onClick={() =>
+                      handleStatusChange(order._id, statusUpdate.status)
+                    }
+                  >
+                    Update Status
+                  </button>
+                </div>
+              )}
+
+              <div className="order-items">
+                {order.items
+                  .filter((item) => item.sellerId.toString() === sellerId) // Filter items for this seller
+                  .map((item) => (
+                    <div key={item._id} className="order-item">
+                      <h4>Product: {item.name}</h4>
+                      <p>Quantity: {item.quantity}</p>
+                      <p>Price: Rs {item.price}</p>
+                    </div>
+                  ))}
               </div>
-            )}
-
-            <div className="order-items">
-              {order.items
-                .filter(item => item.sellerId.toString() === sellerId) // Filter items for this seller
-                .map((item) => (
-                  <div key={item._id} className="order-item">
-                    <h4>Product: {item.name}</h4>
-                    <p>Quantity: {item.quantity}</p>
-                    <p>Price: Rs {item.price}</p>
-                  </div>
-                ))}
             </div>
-          </div>
-        ))
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 };

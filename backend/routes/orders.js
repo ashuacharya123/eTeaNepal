@@ -85,13 +85,13 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// Get orders for the seller
+// Get orders for the seller, sorted by latest order first
 router.get("/seller", auth, async (req, res) => {
   try {
     // Find orders where any item in the items array has the sellerId matching the authenticated user's ID
     const orders = await Order.find({
-      'items.sellerId': req.user.id
-    });
+      "items.sellerId": req.user.id,
+    }).sort({ createdAt: -1 }); // Sort by latest order first
 
     // Send the orders as a response
     res.json(orders);
@@ -100,6 +100,7 @@ router.get("/seller", auth, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // Update order status
 router.put('/:orderId/status', auth, async (req, res) => {
