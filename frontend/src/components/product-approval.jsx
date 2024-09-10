@@ -56,7 +56,6 @@ const PendingProducts = () => {
         <p>No pending products found.</p>
       ) : (
         <ul>
-            {console.log(pendingProducts.length)}
           {pendingProducts.map(product => (
             <li key={product._id}>
               <h3>{product.name}</h3>

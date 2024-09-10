@@ -12,6 +12,9 @@
 @import "./sass/compare-products";
 @import "./sass/profile";
 @import "./sass/orders";
+@import "./sass/seller-dashboard";
+@import "./sass/notification";
+@import "./sass/add-product";
 
 
 
@@ -20,6 +23,22 @@ $bodyColor: #e3efed;
 $white: #ffffff;
 $green: #5e905d;
 $lightGreen:#5DB646;
+
+.out-of-stock{
+  opacity: 0.4;
+
+  &::before{
+    content: "Product out of stock";
+    font-size: 3rem;
+    position: absolute;
+    opacity: 1;
+    top: 50%;
+    left: 0;
+    transform: rotate(300deg);
+    background-color: rgb(255, 255, 255);
+    z-index: 1;
+  }
+}
 
 .loading{
   position: fixed;

@@ -69,6 +69,7 @@ const SellerOrder = () => {
         orders.map((order) => (
           <div key={order._id} className="order">
             <h3>Order ID: {order._id}</h3>
+            <p>Buyer Name: {order.buyerName}</p>
             <p>Ordered on: {new Date(order.orderedAt).toLocaleDateString()}</p>
             <p>Address: {order.address}</p>
             <p>Mobile Number: {order.mobileNumber}</p>

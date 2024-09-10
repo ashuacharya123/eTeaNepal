@@ -7,17 +7,17 @@ import { useNavigate } from 'react-router-dom';
 const Card = (props) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  
+
   // Extract data from props
-  const { name, price, description, stock, ratingCount } = props.props;
-  let { rating,image } = props.props;
+  const { name, price, description, stock, ratingCount, initialPrice } =
+    props.props;
+  let { rating, image } = props.props;
   if (rating) rating = parseFloat(rating.toFixed(1)); // Formatting rating
-  if(!rating) rating=0;
-  if(!image){
-    image=""
+  if (!rating) rating = 0;
+  if (!image) {
+    image = "";
   }
 
-  // const image = tea;
   const quantity = 1;
   const trigger = true;
   const delivery = 0;
@@ -27,35 +27,33 @@ const Card = (props) => {
 
   // Load cart from localStorage on component mount
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(storedCart);
   }, [setCart]);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-
-  // const buyNowFunction = (name, quantity, price) => {
-  //   if (!isAuthenticated) {
-  //     alert("Login first to perform this action 🫠")
-  //     navigate('/login');
-  //     return
-  //   }
-  //   setBuyNow([name, quantity, price, delivery]);
-  // };
-
+  // Function to handle adding item to cart
   const updateCart = async () => {
-if(!isAuthenticated){
-  alert("Please login first to perform this action")
-  navigate('/login')
-  return
-}
+    if (!isAuthenticated) {
+      alert("Please login first to perform this action");
+      navigate("/login");
+      return;
+    }
+
+    // Check if stock is available
+    if (stock < 1) {
+      alert("This item is out of stock!");
+      return;
+    }
+
     let newCart = cart || [];
     let itemFound = false;
     let totalQty = 0;
 
-    newCart = newCart.map(item => {
+    newCart = newCart.map((item) => {
       if (item[0].name === name) {
         item[0].quantity += quantity;
         itemFound = true;
@@ -69,35 +67,57 @@ if(!isAuthenticated){
     }
 
     setCart(newCart);
-    localStorage.setItem('cart', JSON.stringify(newCart));
-
-    
+    localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
   return (
     <div className="shop__container__content">
-      <div className="shop__container__content__card__container">
-        <div id="hoverDescription"><b>Description</b>{description}</div>
-        <div className="shop__container__content__card__container__card__image">
-          <img src={image === "" ? tea : `http://localhost:8000/public/${image}`} alt="tea" />
+      <div
+        className={`shop__container__content__card__container ${
+          stock < 1 ? "out-of-stock" : ""
+        }`}
+      >
+        <div id="hoverDescription">
+          <b>Description</b>
+          {description}
         </div>
-        <h3 className="asl mb1 rating">
-          <b>{rating}</b>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.0001 17.27L16.1501 19.78C16.9101 20.24 17.8401 19.56 17.6401 18.7L16.5401 13.98L20.2101 10.8C20.8801 10.22 20.5201 9.12001 19.6401 9.05001L14.8101 8.64001L12.9201 4.18001C12.5801 3.37001 11.4201 3.37001 11.0801 4.18001L9.19007 8.63001L4.36007 9.04001C3.48007 9.11001 3.12007 10.21 3.79007 10.79L7.46007 13.97L6.36007 18.69C6.16007 19.55 7.09007 20.23 7.85007 19.77L12.0001 17.27Z" fill="#E7D400" />
-          </svg> ({ratingCount} ratings)
-        </h3>
+        <div className="shop__container__content__card__container__card__image">
+          <img
+            src={image === "" ? tea : `http://localhost:8000/public/${image}`}
+            alt="tea"
+            className={stock < 1 ? "blurred" : ""}
+          />
+        </div>
         <div className="shop__container__content__card__container__card__details">
+          <h3 className="asl mb1 rating">
+            <b>{rating}</b>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12.0001 17.27L16.1501 19.78C16.9101 20.24 17.8401 19.56 17.6401 18.7L16.5401 13.98L20.2101 10.8C20.8801 10.22 20.5201 9.12001 19.6401 9.05001L14.8101 8.64001L12.9201 4.18001C12.5801 3.37001 11.4201 3.37001 11.0801 4.18001L9.19007 8.63001L4.36007 9.04001C3.48007 9.11001 3.12007 10.21 3.79007 10.79L7.46007 13.97L6.36007 18.69C6.16007 19.55 7.09007 20.23 7.85007 19.77L12.0001 17.27Z"
+                fill="#E7D400"
+              />
+            </svg>{" "}
+            ({ratingCount} ratings)
+          </h3>
           <span>
-            Rs{price} <li>Rs19</li> <button>only {stock} left</button>
+            Rs{price} <li>Rs{initialPrice}</li>{" "}
+            <button>only {stock} left</button>
           </span>
           <span>
             <h6>{name}</h6>
-            {/* <p>{description}</p> */}
-            <button onClick={updateCart}>Add to cart</button>
-            {/* <button onClick={() => buyNowFunction(name, quantity, price)}>
-              Buy now
-            </button> */}
+            <button
+              onClick={updateCart}
+              disabled={stock < 1}
+              className={stock < 1 ? "disabled-button" : ""}
+            >
+              Add to cart
+            </button>
           </span>
         </div>
       </div>

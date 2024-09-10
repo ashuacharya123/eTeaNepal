@@ -28,6 +28,8 @@ app.get('/', (req, res) => {
 });
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+app.use('/api', require('./routes/stripe'));
+
 app.use('/api/auth', require('./routes/auth'));
 
 app.use('/api/seller', require('./routes/seller'));

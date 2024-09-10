@@ -67,7 +67,7 @@ const AddProduct = () => {
 
   return (
     <div className="add-product-page">
-      <h1>Add a Product</h1>
+      <h1 className="heading-text">Add a Product</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="productName">Product Name</label>
@@ -128,8 +128,14 @@ const AddProduct = () => {
           />
         </div>
         <div className="form-group">
-          <button type="submit">Add New Product</button>
-          <button type="button" onClick={handleCancel} className="cancel-button">
+          <button className="btn clickAnimation" type="submit">
+            Add New Product
+          </button>
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="btn clickAnimation"
+          >
             Cancel
           </button>
         </div>

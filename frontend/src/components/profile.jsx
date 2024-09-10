@@ -186,7 +186,8 @@ const Profile = () => {
       <div className="profile__actions">
         <button onClick={() => setEditPassword(true)} className="btn" style={{backgroundColor:'#E7D400',color:'black'}}>Change Password</button>
         <button onClick={handleDeleteAccount}  className="btn" style={{backgroundColor:'#BF4B4B',}} >Delete Account</button>
-        <Link to="/orders" className="nav-btn" ><button>View Orders</button></Link>
+        <Link to="/orders" className="nav-btn" id={localStorage.getItem("role") === "seller" || localStorage.getItem("role") === "admin"?"dn":""}
+         ><button>View Orders</button></Link>
         <button onClick={handleLogout} className="btn" >Logout</button>
       </div>
       {editPassword && (

@@ -34,6 +34,11 @@ import Error404Page from "./components/error404page.jsx";
 import Error500Page from "./components/error500page.jsx";
 import ErrorBoundary from "./components/errorBoundary.jsx";
 
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51PxLIv084b8IR9XHcyR2jfYQA0gs6yibXHiO2vYNEqHRQOxUXNZuTv9xna3q7F02AoXId9bx7W9yqY5yfUTiw2HL00gkRrQG5o');
+
 function App() {
   const [cart, setCart] = useState([]);
   const [cartShow, setCartShow] = useState(false);
@@ -47,7 +52,9 @@ function App() {
           <buy.Provider value={{ buyNow, setBuyNow }}>
             <showCart.Provider value={{ cartShow, setCartShow }}>
               <ErrorBoundary>
+                <Elements stripe={stripePromise}>
                 <Cart />
+                </Elements>
                 <Navbar />
                 <MobileMenu />
                 <Routes>

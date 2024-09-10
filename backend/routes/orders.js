@@ -3,11 +3,15 @@ const express = require("express");
 const router = express.Router();
 const Order = require("../models/Order");
 const auth = require("../middleware/auth");
+const Product = require("../models/Product");
+const Notification = require("../models/Notification");
 
+// Create an order
 // Create an order
 router.post("/", auth, async (req, res) => {
   try {
-    const { items, total, delivery, address, mobileNumber } = req.body;
+    const { items, total, delivery, address, mobileNumber, buyerName } =
+      req.body;
     const userId = req.user.id;
 
     // Create a new order
@@ -18,15 +22,57 @@ router.post("/", auth, async (req, res) => {
       delivery,
       address,
       mobileNumber,
+      buyerName,
     });
 
+    // Save the order first
     await newOrder.save();
+
+    // Now update the stock of the ordered products
+    const sellersNotified = new Set(); // To avoid notifying the same seller multiple times
+
+    for (const item of items) {
+      const product = await Product.findById(item.product);
+
+      if (!product) {
+        return res
+          .status(404)
+          .json({ error: `Product with id ${item.product} not found` });
+      }
+
+      // Decrease the stock by the quantity ordered
+      product.stock -= item.quantity;
+
+      // Ensure stock doesn't go below zero
+      if (product.stock < 0) {
+        product.stock = 0;
+      }
+
+      await product.save();
+
+      // Notify the seller if not already notified
+      if (product.seller && !sellersNotified.has(product.seller)) {
+        console.log(product.seller);
+        if (product.seller) {
+          const notification = new Notification({
+            user: product.seller,
+            message: `You have a new order for product "${product.name}" by ${buyerName}.`,
+          });
+          await notification.save();
+
+          sellersNotified.add(product.seller);
+        }
+      }
+    }
+
     res.status(201).json(newOrder);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: err.message });
   }
 });
+
+
 
 // Get orders for the logged-in user
 router.get("/", auth, async (req, res) => {

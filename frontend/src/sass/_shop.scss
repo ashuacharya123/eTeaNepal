@@ -50,9 +50,10 @@
         // opacity: 0;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         position: relative;
+        height: 60rem;
   
         #hoverDescription{
           color: black;
@@ -85,14 +86,19 @@
         .rating{
           font-size: 1.3rem;
           
-          width: 84%;
+          width: 92%;
           margin-inline:  auto;
           font-weight: 300;
         }
   
         &__card__image {
+          flex: 60%;
+          max-height: 60%;
+          overflow: hidden;
           img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
         }
         &__card__details {

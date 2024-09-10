@@ -1,0 +1,32 @@
+.notification-dropdown{
+    display: flex;
+    justify-content: center;align-items: center;
+    flex-direction: column;
+    position: fixed;top: 10rem;
+    right: 0;
+    background-color:rgb(255, 255, 255);
+    width: 40rem;
+
+    &__wrapper{
+        width: 90%;
+        margin-inline: auto;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 2rem;
+
+        &__notification{
+            display: flex;
+            gap:-0.5rem;
+            justify-content: center;align-items: center;
+            border-bottom: 1px dashed black;
+
+            &__delete{
+                background-color: transparent!important;
+                color: red;
+            }
+        }
+    }
+}

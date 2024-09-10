@@ -84,7 +84,9 @@ const Footer = () => {
               // placeholder="Enter your email"
             />
           </li>
-          <button onClick={handleSubscribe}>Subscribe</button>
+          <button className="clickAnimation" onClick={handleSubscribe}>
+            Subscribe
+          </button>
         </div>
       </div>
     </div>
