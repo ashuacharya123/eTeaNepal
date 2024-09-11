@@ -24,11 +24,16 @@
       }
   
       &__health {
-        opacity: 0;
-        margin-left: 3rem;
+        // opacity: 0;
+        margin-left: 2rem;
         height: 70%;
+        scale: 0.9;
+        @media screen and (max-width:456px) {
+          scale: 0.7;
+          margin-left: -4rem;
+        }
         img {
-          height: 100%;
+          // height: 100%;
         }
       }
     }
