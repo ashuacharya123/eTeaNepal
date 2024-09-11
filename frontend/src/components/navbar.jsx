@@ -129,7 +129,7 @@ export default function Navbar() {
             </Link>
 
             <div
-              className="notification clickAnimation"
+              className="notification"
               onClick={() => setShowNotifications(!showNotifications)}
               id={
                 localStorage.getItem("role") === "seller" ||
@@ -141,6 +141,7 @@ export default function Navbar() {
               {showNotifications ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  className="clickAnimation"
                   x="0px"
                   y="0px"
                   width="30"
@@ -182,6 +183,7 @@ export default function Navbar() {
                 </svg>
               ) : (
                 <svg
+                  className="clickAnimation"
                   width="32"
                   height="32"
                   viewBox="0 0 50 50"

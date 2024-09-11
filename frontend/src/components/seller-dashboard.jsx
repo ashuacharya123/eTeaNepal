@@ -175,6 +175,7 @@ const SellerDashboard = () => {
                 </div>
                 <div className="seller-dashboard__lower__product__wrapper__product__details">
                   <p>
+                    {product.name}{" "}
                     {product.verified ? (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -198,7 +199,6 @@ const SellerDashboard = () => {
                       ``
                     )}
                   </p>
-                  <p>{product.name}</p>
                   <p>In Stock: {product.stock}</p>
                   <p>Final Price: Rs {product.finalPrice}</p>
                   <p>Initial Price: Rs {product.initialPrice}</p>

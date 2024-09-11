@@ -13,3 +13,53 @@
         }
     }
 }
+
+.seller-report{
+    margin-top: 12rem;
+    display: flex;
+    justify-content: center;align-items: center;
+    flex-direction: column;
+    width: 80%;
+    margin-inline: auto;
+
+    p{
+        margin-bottom: .5rem;
+    }
+
+    &-name{
+        font-size: 2rem;
+        font-weight: 200;
+        margin-bottom: 1rem;
+    }
+
+    ul{
+        list-style: none;
+        display: flex;
+        justify-content: center;align-items: center;
+        gap: 3rem;
+        margin-top: 2rem;
+      flex-wrap: wrap;
+
+        li{
+            border: 1px dashed black;
+            padding: 1rem;
+        }
+    }
+    li{
+        list-style: none;
+
+        button{
+            margin-top: 4rem;
+        }
+    }
+
+    h4{
+        font-size: 1.4rem;
+
+    }
+
+    h3{
+        margin-top: 2rem;
+        font-size: 2rem;
+    }
+}
