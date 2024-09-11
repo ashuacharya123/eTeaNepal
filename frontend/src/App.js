@@ -11,7 +11,6 @@ import Footer from "./components/footer";
 import Cart from "./components/cart";
 import Login from "./components/login";
 import PendingProducts from "./components/product-approval.jsx";
-import VerifySeller from "./components/verify-seller.jsx";
 import ManageProducts from "./components/manage-products.jsx";
 import ManageUsers from "./components/manage-users.jsx";
 import BestDeals from "./components/best-deals.jsx";
@@ -53,7 +52,7 @@ function App() {
             <showCart.Provider value={{ cartShow, setCartShow }}>
               <ErrorBoundary>
                 <Elements stripe={stripePromise}>
-                <Cart />
+                  <Cart />
                 </Elements>
                 <Navbar />
                 <MobileMenu />
@@ -73,13 +72,15 @@ function App() {
                     </>
                   ) : localStorage.getItem("role") === "admin" ? (
                     <>
-                    <Route path="/sellers-list" element={<SellersList/>} />
-                    <Route path="/seller-report/:sellerId" element={<SellerReport/>} />
+                      <Route path="/sellers-list" element={<SellersList />} />
+                      <Route
+                        path="/seller-report/:sellerId"
+                        element={<SellerReport />}
+                      />
                       <Route
                         path="/product-approval"
                         element={<PendingProducts />}
                       />
-                      <Route path="/verify-seller" element={<VerifySeller />} />
                       <Route
                         path="/manage-products"
                         element={<ManageProducts />}

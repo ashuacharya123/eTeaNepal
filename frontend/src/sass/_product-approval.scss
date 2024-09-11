@@ -1,0 +1,42 @@
+.product-approval {
+  display: flex;
+  justify-content: baseline;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 12rem;
+
+  &__list {
+    margin-top: 3rem;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    li{
+        display: flex;
+        gap: 1rem;
+        border: 2px  dashed black;  
+        aspect-ratio: 21/9;
+        @media screen and (max-width:656px) {
+            aspect-ratio: 1/.6;
+        }
+    }
+    &__image{
+        flex: 60%;
+        width: 50%;
+        img{
+            height: 100%;
+            width: 100%;
+            aspect-ratio: 1;
+        }
+    }
+    &__content{
+        flex: 40%;
+        display: flex;
+        justify-content: space-around;align-items: center;flex-direction: column;
+    }
+  }
+}

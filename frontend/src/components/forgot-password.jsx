@@ -44,6 +44,7 @@ const ForgotResetPassword = () => {
       navigate("/login"); // Redirect to login after successful reset
     } catch (error) {
       setError("Failed to reset password. Please check your details.");
+      alert("Failed to reset password. Please check your details.");
     }
   };
 

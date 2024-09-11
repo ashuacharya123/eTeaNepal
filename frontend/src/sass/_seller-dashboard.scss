@@ -43,11 +43,13 @@ $lightGreen: #5db646;
       align-items: end;
       flex-direction: column;
       gap: 3rem;
-
+      
       &__dashboard-stats {
         display: flex;
         text-align: center;
         gap: 2rem;
+        flex-wrap: wrap;
+
 
         .stat {
           display: flex;
@@ -71,6 +73,7 @@ $lightGreen: #5db646;
         display: flex;
         gap: 2rem;
         font-size: 1.25rem;
+        flex-wrap: wrap;
 
         a {
           text-decoration: none;

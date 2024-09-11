@@ -1,0 +1,27 @@
+.manage-products{
+    display: flex;
+    justify-content: center;align-items: center;
+flex-direction:column;
+margin-top: 12rem;
+input, textarea{
+    padding: .5rem 1rem;
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+}
+
+.product-list{
+    display: flex;
+    justify-content: center;align-items: center;
+flex-wrap: wrap;
+width: 80%;
+gap: 4rem;
+margin-top: 5rem;
+}
+
+.product-item{
+    display: flex;
+    justify-content: center;align-items: center;flex-direction: column;
+    border: 1px dashed black;
+    padding: 2rem;
+}

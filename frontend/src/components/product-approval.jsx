@@ -55,24 +55,31 @@ const PendingProducts = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
-      <h2>Pending Products</h2>
+    <div className="product-approval">
+      <h2 className="heading-text">Pending Products</h2>
       {pendingProducts.length === 0 ? (
         <p>No pending products found.</p>
       ) : (
-        <ul>
+        <ul className="product-approval__list">
           {pendingProducts.map((product) => (
             <li key={product._id}>
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <p>Price: Rs{product.price}</p>
-              <img
-                src={`https://eteanepalbackend-production.up.railway.app/public/${product.image}`}
-                alt="tea"
-              />
-              <button onClick={() => handleVerifyProduct(product._id)}>
-                Verify
-              </button>
+              <div className="product-approval__list__image">
+                <img
+                  src={`https://eteanepalbackend-production.up.railway.app/public/${product.image}`}
+                  alt="tea"
+                />
+              </div>
+              <div className="product-approval__list__content">
+                <h3>{product.name}</h3>
+                <p>{product.description}</p>
+                <p>Price: Rs{product.price}</p>
+                <button
+                  onClick={() => handleVerifyProduct(product._id)}
+                  className="btn clickAnimation"
+                >
+                  Verify
+                </button>
+              </div>
             </li>
           ))}
         </ul>

@@ -113,79 +113,110 @@ const ManageProducts = () => {
     <div className="manage-products">
       {editingProduct ? (
         <div className="edit-product-form">
-          <h1>Edit Product</h1>
-          <div className="form-group">
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Price</label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label>Stock</label>
-            <input
-              type="number"
-              name="stock"
-              value={formData.stock}
-              onChange={handleChange}
-            />
-          </div>
-          
+          <h1 className="heading-text">Edit Product</h1>
+          <div className="product-item">
+            <div className="form-group ">
+              <label>Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Price</label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>Stock</label>
+              <input
+                type="number"
+                name="stock"
+                value={formData.stock}
+                onChange={handleChange}
+              />
+            </div>
 
-          <div className="form-group">
-            <label>Initial Price</label>
-            <input
-              type="number"
-              name="initialPrice"
-              value={formData.initialPrice}
-              onChange={handleChange}
-            />
+            <div className="form-group">
+              <label>Initial Price</label>
+              <input
+                type="number"
+                name="initialPrice"
+                value={formData.initialPrice}
+                onChange={handleChange}
+              />
+            </div>
           </div>
           <div className="form-actions">
-            <button onClick={handleSave}>Save</button>
-            <button onClick={handleCancel}>Cancel</button>
+            <button onClick={handleSave} className="btn clickAnimation">
+              Save
+            </button>
+            <button
+              onClick={handleCancel}
+              className="btn clickAnimation"
+              style={{
+                backgroundColor: "transparent",
+                color: "black",
+                border: ".5px solid black",
+                marginLeft: ".5rem",
+                marginTop: "1rem",
+              }}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       ) : (
         <>
-          <h1>Manage Products</h1>
+          <h1 className="heading-text">Manage Products</h1>
           <h2>Welcome, Ashish!</h2>
           {loading ? (
             <p className="loading">Loading...</p>
           ) : (
             <div className="product-list">
-              {products.map(product => (
+              {products.map((product) => (
                 <div key={product._id} className="product-item">
                   <div className="product-info">
                     <h3>{product.name}</h3>
                     <p>{product.description}</p>
                     <p>In Stock {product.stock}</p>
                     <p>Final price Rs {product.price}</p>
-                    {product.initialPrice && <p>Initial price Rs {product.initialPrice}</p>}
+                    {product.initialPrice && (
+                      <p>Initial price Rs {product.initialPrice}</p>
+                    )}
                   </div>
                   <div className="product-actions">
-                    <button onClick={() => handleEdit(product)}>Edit</button>
-                    <button onClick={() => handleDelete(product._id)}>Delete</button>
-
+                    <button
+                      onClick={() => handleEdit(product)}
+                      className="btn clickAnimation"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(product._id)}
+                      className="btn clickAnimation ml"
+                      style={{
+                        backgroundColor: "red",
+                        marginLeft: ".5rem",
+                        marginTop: ".5rem",
+                      }}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}

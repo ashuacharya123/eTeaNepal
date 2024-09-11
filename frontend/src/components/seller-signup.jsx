@@ -5,22 +5,22 @@ import loginPhoto from "../Assets/login.png";
 
 const SellerSignup = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    businessName: '',
-    email: '',
-    businessAddress: '',
-    password: '',
-    confirmPassword: '',
-    panCardNumber: '',
+    name: "",
+    businessName: "",
+    email: "",
+    businessAddress: "",
+    password: "",
+    confirmPassword: "",
+    panCard: "",
     panCardDocument: null, // For file upload
-    mobileNumber: ''
+    mobileNumber: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'panCardDocument') {
+    if (name === "panCardDocument") {
       setFormData({ ...formData, [name]: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -48,21 +48,23 @@ const SellerSignup = () => {
           },
         }
       );
-      navigate('/verify-otp'); // Redirect to verify OTP page
+      navigate("/verify-otp"); // Redirect to verify OTP page
     } catch (error) {
-      setError('Signup failed. Please check your details.');
+      setError("Signup failed. Please check your details.");
     }
   };
 
   return (
-    <div className='container'>
-      <div className='login__container'>
+    <div className="container">
+      <div className="login__container">
         <div className="login__container__content">
           <div className="login__container__content__upper">
-            <h1 className='heading-text'>Seller Signup</h1>
+            <h1 className="heading-text">Seller Signup</h1>
             <div>
-                <p>Already signed up? <Link to="/login">Login</Link></p>
-              </div>
+              <p>
+                Already signed up? <Link to="/login">Login</Link>
+              </p>
+            </div>
           </div>
           <div className="login__container__content__lower">
             <div className="login__container__content__lower__right">
@@ -122,19 +124,16 @@ const SellerSignup = () => {
                   onChange={handleInputChange}
                 />
               </div>
-             
             </div>
             <div className="login__container__content__lower__right">
-              
-              
               <div className="login__container__content__lower__right__fields">
                 <label htmlFor="panCardNumber">PAN Card Number</label>
                 <input
                   type="text"
-                  id="panCardNumber"
-                  name="panCardNumber"
+                  id="panCard"
+                  name="panCard"
                   placeholder="Enter your PAN card number"
-                  value={formData.panCardNumber}
+                  value={formData.panCard}
                   onChange={handleInputChange}
                 />
               </div>
@@ -150,7 +149,9 @@ const SellerSignup = () => {
                 />
               </div>
               <div className="login__container__content__lower__right__fields">
-                <label htmlFor="panCardDocument">Upload PAN Card Document</label>
+                <label htmlFor="panCardDocument">
+                  Upload PAN Card Document
+                </label>
                 <input
                   type="file"
                   id="panCardDocument"
@@ -171,7 +172,6 @@ const SellerSignup = () => {
               </div>
               <button onClick={handleSignup}>Signup</button>
               {error && <p className="error">{error}</p>}
-              
             </div>
           </div>
         </div>

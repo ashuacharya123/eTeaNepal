@@ -33,21 +33,21 @@ const SellersList = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <h2>List of Sellers</h2>
-      {sellers.length === 0 ? (
-        <p>No sellers found.</p>
-      ) : (
-        <ul>
-          {sellers.map(seller => (
-            <li key={seller._id}>
-              <Link to={`/seller-report/${seller._id}`}>
-                {seller.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="seller-list">
+      <div>
+        <h2 className="heading-text">List of Sellers</h2>
+        {sellers.length === 0 ? (
+          <p>No sellers found.</p>
+        ) : (
+          <ol>
+            {sellers.map((seller) => (
+              <li key={seller._id}>
+                <Link to={`/seller-report/${seller._id}`}>{seller.name}</Link>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
     </div>
   );
 };

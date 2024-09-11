@@ -19,6 +19,7 @@ const VerifyOTP = () => {
       navigate("/login"); // Redirect to a dashboard or homepage after successful verification
     } catch (error) {
       setError("Verification failed. Please check your OTP and email.");
+      alert("Verification failed. Please check your OTP and email.");
     }
   };
 
@@ -31,15 +32,19 @@ const VerifyOTP = () => {
       alert("OTP has been resent to your email.");
     } catch (error) {
       setError("Failed to resend OTP. Please try again later.");
+      alert("Enter your email to resend OTP");
     }
   };
 
   return (
-    <div className='container'>
-      <div className='verify-otp__container'>
-        <div className="verify-otp__content">
-          <h1>Verify OTP</h1>
-          <div>
+    <div className="login__container">
+      <div className="verify-otp__container">
+        <div className="login__container__content">
+          <h1 className="heading-text">Verify OTP</h1>
+          <div
+            className="login__container__content__lower__right__fields "
+            style={{ marginTop: "2rem" }}
+          >
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -50,7 +55,10 @@ const VerifyOTP = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div>
+          <div
+            className="login__container__content__lower__right__fields"
+            style={{ marginTop: "2rem" }}
+          >
             <label htmlFor="otp">OTP</label>
             <input
               type="text"
@@ -61,11 +69,17 @@ const VerifyOTP = () => {
               onChange={(e) => setOtp(e.target.value)}
             />
           </div>
-          <button onClick={handleVerify}>Verify OTP</button>
-          {error && <p className="error">{error}</p>}
+          <div
+            className="login__container__content__lower__right__fields "
+            style={{ marginTop: "2rem" }}
+          >
+            <button onClick={handleVerify} className="btn clickAnimation">
+              Verify OTP
+            </button>
+          </div>
           <div>
-            <p>
-              Didn't receive the OTP?{' '}
+            <p style={{ marginTop: "2rem" }}>
+              Didn't receive the OTP?{" "}
               <a href="#" onClick={handleResendOTP}>
                 Resend OTP
               </a>

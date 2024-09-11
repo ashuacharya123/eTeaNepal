@@ -30,16 +30,35 @@ const SellerReport = () => {
     fetchSellerReport();
   }, [sellerId]);
 
+  const handleVerification = async (sellerId) => {
+    try {
+      await axios.put(
+        `https://eteanepalbackend-production.up.railway.app/api/admin/verify/seller/${sellerId}`,
+        {},
+        {
+          headers: {
+            "x-auth-token": localStorage.getItem("x-auth-token"),
+          },
+        }
+      );
+      alert("Success ✅");
+      window.location.reload();
+    } catch (err) {
+      console.error("Error verifying seller", err);
+    }
+  };
+
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div>
       <h2>Seller Report for {report.seller.name}</h2>
+      <span>({report.seller.verified ? "Verified" : "Unverified"})</span>
       <p>Email: {report.seller.email}</p>
       <p>Total Sales: Rs{report.totalSales}</p>
       <p>Number of Orders: {report.numberOfOrders}</p>
-
+      {console.log(report)}
       <h3>Products</h3>
       <ul>
         {report.products.map((product) => (
@@ -68,6 +87,11 @@ const SellerReport = () => {
           </li>
         ))}
       </ul>
+      <li>
+        <button onClick={() => handleVerification(sellerId)}>
+          {report.seller.verified ? "Unverify" : "Verify"}
+        </button>
+      </li>
     </div>
   );
 };
