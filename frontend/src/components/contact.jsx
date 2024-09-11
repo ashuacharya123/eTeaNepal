@@ -8,21 +8,25 @@ const Contact = () => {
     <div className="contact__container">
       <div className="contact__content ">
         <div className="contact__content__text ml2 mr2">Contact us</div>
-        <form className="contact__content__form">
+        <form
+          className="contact__content__form"
+          action="https://formspree.io/f/xblreldw"
+          method="POST"
+        >
           <div className="contact__content__form__upper ml2">
             <li>
               Name
-              <input type="text" />
+              <input type="text" name="name" required />
             </li>
             <li>
               Email
-              <input type="email" />
+              <input type="email" name="email" required />
             </li>
             <li>
               Message
-              <input type="text" />
+              <input type="text" name="message" required />
             </li>
-            <button>Contact us</button>
+            <button type="submit">Contact us</button>
           </div>
           <div className="contact__content__form__lower ml2">
             <div className="contact__content__form__lower__text">
