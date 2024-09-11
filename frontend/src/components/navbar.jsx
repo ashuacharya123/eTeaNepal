@@ -101,8 +101,8 @@ export default function Navbar() {
                     src={`https://eteanepalbackend-production.up.railway.app/public/${avatar}`}
                     alt="User Avatar"
                     style={{
-                      width: "32px",
-                      height: "32px",
+                      width: "50px",
+                      height: "50px",
                       borderRadius: "50%",
                       objectFit: "cover",
                     }}
