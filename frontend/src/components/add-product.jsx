@@ -37,7 +37,7 @@ const AddProduct = () => {
 
     try {
       const response = await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/seller/product",
+        "https://eteanepalbackend-production.up.railway.app/api/seller/product",
         formData,
         {
           headers: {

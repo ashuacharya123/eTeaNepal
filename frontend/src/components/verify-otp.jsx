@@ -11,26 +11,26 @@ const VerifyOTP = () => {
   const handleVerify = async () => {
     try {
       const response = await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/auth/verify",
+        "https://eteanepalbackend-production.up.railway.app/api/auth/verify",
         { email, otp }
       );
       // Handle successful verification
-      alert('OTP has been verified, now you can login');
-      navigate('/login'); // Redirect to a dashboard or homepage after successful verification
+      alert("OTP has been verified, now you can login");
+      navigate("/login"); // Redirect to a dashboard or homepage after successful verification
     } catch (error) {
-      setError('Verification failed. Please check your OTP and email.');
+      setError("Verification failed. Please check your OTP and email.");
     }
   };
 
   const handleResendOTP = async () => {
     try {
       await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/auth/resend-otp",
+        "https://eteanepalbackend-production.up.railway.app/api/auth/resend-otp",
         { email }
       );
-      alert('OTP has been resent to your email.');
+      alert("OTP has been resent to your email.");
     } catch (error) {
-      setError('Failed to resend OTP. Please try again later.');
+      setError("Failed to resend OTP. Please try again later.");
     }
   };
 

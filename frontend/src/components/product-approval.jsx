@@ -10,7 +10,7 @@ const PendingProducts = () => {
     const fetchPendingProducts = async () => {
       try {
         const response = await axios.get(
-          "eteanepalbackend-production.up.railway.app/api/admin/products/pending",
+          "https://eteanepalbackend-production.up.railway.app/api/admin/products/pending",
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -19,7 +19,7 @@ const PendingProducts = () => {
         );
         setPendingProducts(response.data);
       } catch (err) {
-        setError('Failed to fetch pending products.');
+        setError("Failed to fetch pending products.");
       } finally {
         setLoading(false);
       }
@@ -31,7 +31,7 @@ const PendingProducts = () => {
   const handleVerifyProduct = async (productId) => {
     try {
       const response = await axios.put(
-        `eteanepalbackend-production.up.railway.app/api/admin/verify/product/${productId}`,
+        `https://eteanepalbackend-production.up.railway.app/api/admin/verify/product/${productId}`,
         {},
         {
           headers: {
@@ -39,13 +39,15 @@ const PendingProducts = () => {
           },
         }
       );
-      setPendingProducts(pendingProducts.map(product =>
-        product._id === productId ? response.data : product
-      ));
-      alert("Product Verified Successfully ✅")
+      setPendingProducts(
+        pendingProducts.map((product) =>
+          product._id === productId ? response.data : product
+        )
+      );
+      alert("Product Verified Successfully ✅");
       window.location.reload();
     } catch (err) {
-      setError('Failed to update product verification status.');
+      setError("Failed to update product verification status.");
     }
   };
 
@@ -65,7 +67,7 @@ const PendingProducts = () => {
               <p>{product.description}</p>
               <p>Price: Rs{product.price}</p>
               <img
-                src={`eteanepalbackend-production.up.railway.app/public/${product.image}`}
+                src={`https://eteanepalbackend-production.up.railway.app/public/${product.image}`}
                 alt="tea"
               />
               <button onClick={() => handleVerifyProduct(product._id)}>

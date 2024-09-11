@@ -24,7 +24,7 @@ const SellerOrder = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          "eteanepalbackend-production.up.railway.app/api/orders/seller",
+          "https://eteanepalbackend-production.up.railway.app/api/orders/seller",
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -32,8 +32,8 @@ const SellerOrder = () => {
           }
         );
         // Filter orders where sellerId is present in the items array
-        const filteredOrders = response.data.filter(order =>
-          order.items.some(item => item.sellerId.toString() === sellerId)
+        const filteredOrders = response.data.filter((order) =>
+          order.items.some((item) => item.sellerId.toString() === sellerId)
         );
         setOrders(filteredOrders);
       } catch (error) {
@@ -50,17 +50,19 @@ const SellerOrder = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await axios.put(
-        `eteanepalbackend-production.up.railway.app/api/orders/${orderId}/status`,
+        `https://eteanepalbackend-production.up.railway.app/api/orders/${orderId}/status`,
         { status: newStatus },
         { headers: { "x-auth-token": localStorage.getItem("x-auth-token") } }
       );
-      setOrders(orders.map(order =>
-        order._id === orderId ? { ...order, status: newStatus } : order
-      ));
-      alert('Order status updated successfully');
+      setOrders(
+        orders.map((order) =>
+          order._id === orderId ? { ...order, status: newStatus } : order
+        )
+      );
+      alert("Order status updated successfully");
     } catch (error) {
-      console.error('Failed to update order status:', error);
-      alert('Failed to update order status. Please try again later.');
+      console.error("Failed to update order status:", error);
+      alert("Failed to update order status. Please try again later.");
     }
   };
 

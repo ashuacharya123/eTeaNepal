@@ -11,7 +11,7 @@ const SellersList = () => {
     const fetchSellers = async () => {
       try {
         const response = await axios.get(
-          "eteanepalbackend-production.up.railway.app/api/admin/sellers",
+          "https://eteanepalbackend-production.up.railway.app/api/admin/sellers",
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),

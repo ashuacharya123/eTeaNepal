@@ -158,7 +158,7 @@ const Cart = () => {
                     src={
                       d.image.length === 0
                         ? tea
-                        : `eteanepalbackend-production.up.railway.app/public/${d.image}`
+                        : `https://eteanepalbackend-production.up.railway.app/public/${d.image}`
                     }
                     alt=""
                   />

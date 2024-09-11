@@ -40,7 +40,7 @@ const SellerSignup = () => {
       }
 
       const response = await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/seller/register",
+        "https://eteanepalbackend-production.up.railway.app/api/seller/register",
         formDataToSend,
         {
           headers: {

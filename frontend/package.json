@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "eteanepalbackend-production.up.railway.app",
+  "proxy": "https://eteanepalbackend-production.up.railway.app",
   "dependencies": {
     "@stripe/react-stripe-js": "^2.8.0",
     "@stripe/stripe-js": "^4.4.0",

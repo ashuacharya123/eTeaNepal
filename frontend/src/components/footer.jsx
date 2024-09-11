@@ -22,7 +22,7 @@ const Footer = () => {
 
     try {
       const response = await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/subscribe",
+        "https://eteanepalbackend-production.up.railway.app/api/subscribe",
         { email }
       );
       if (response.status === 200) {

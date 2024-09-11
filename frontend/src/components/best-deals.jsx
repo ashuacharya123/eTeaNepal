@@ -11,7 +11,7 @@ const BestDeals = () => {
         const fetchTopProducts = async () => {
             try {
                 const response = await axios.get(
-                  "eteanepalbackend-production.up.railway.app/api/algorithms/top-products"
+                  "https://eteanepalbackend-production.up.railway.app/api/algorithms/top-products"
                 );
                 setTopProducts(response.data);
                 setLoading(false);

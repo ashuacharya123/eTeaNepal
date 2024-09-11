@@ -18,7 +18,7 @@ const ManageProducts = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "eteanepalbackend-production.up.railway.app/api/products",
+          "https://eteanepalbackend-production.up.railway.app/api/products",
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -28,7 +28,7 @@ const ManageProducts = () => {
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
         setLoading(false);
       }
     };
@@ -38,21 +38,23 @@ const ManageProducts = () => {
 
   // Handle product deletion
   const handleDelete = async (productId) => {
-    const confirmed = window.confirm('Are you sure you want to delete this product?');
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
     if (confirmed) {
       try {
         await axios.delete(
-          `eteanepalbackend-production.up.railway.app/api/products/${productId}`,
+          `https://eteanepalbackend-production.up.railway.app/api/products/${productId}`,
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),
             },
           }
         );
-        alert("Successfully Deleted ✅")
-        setProducts(products.filter(product => product._id !== productId));
+        alert("Successfully Deleted ✅");
+        setProducts(products.filter((product) => product._id !== productId));
       } catch (error) {
-        console.error('Error deleting product:', error);
+        console.error("Error deleting product:", error);
       }
     }
   };
@@ -82,7 +84,7 @@ const ManageProducts = () => {
     if (editingProduct) {
       try {
         await axios.put(
-          `eteanepalbackend-production.up.railway.app/api/products/${editingProduct._id}`,
+          `https://eteanepalbackend-production.up.railway.app/api/products/${editingProduct._id}`,
           formData,
           {
             headers: {

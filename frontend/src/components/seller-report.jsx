@@ -12,7 +12,7 @@ const SellerReport = () => {
     const fetchSellerReport = async () => {
       try {
         const response = await axios.get(
-          `eteanepalbackend-production.up.railway.app/api/admin/seller-report/${sellerId}`,
+          `https://eteanepalbackend-production.up.railway.app/api/admin/seller-report/${sellerId}`,
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -22,7 +22,7 @@ const SellerReport = () => {
         setReport(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch seller report');
+        setError("Failed to fetch seller report");
         setLoading(false);
       }
     };
@@ -49,7 +49,7 @@ const SellerReport = () => {
             <p>Price: Rs{product.price}</p>
             <p>Initial Price: Rs{product.initialPrice}</p>
             <img
-              src={`eteanepalbackend-production.up.railway.app/public/${product.image}`}
+              src={`https://eteanepalbackend-production.up.railway.app/public/${product.image}`}
               alt={product.name}
               style={{ width: "100px" }}
             />

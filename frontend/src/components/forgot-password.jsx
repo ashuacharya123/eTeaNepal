@@ -24,26 +24,26 @@ const ForgotResetPassword = () => {
   const handleForgotPassword = async () => {
     try {
       await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/auth/resend-otp",
+        "https://eteanepalbackend-production.up.railway.app/api/auth/resend-otp",
         { email }
       );
-      alert('OTP has been sent to your email.');
+      alert("OTP has been sent to your email.");
       handleSwitchToResetPassword();
     } catch (error) {
-      setError('Failed to send OTP. Please check your email.');
+      setError("Failed to send OTP. Please check your email.");
     }
   };
 
   const handleResetPassword = async () => {
     try {
       await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/auth/reset-password",
+        "https://eteanepalbackend-production.up.railway.app/api/auth/reset-password",
         { email, otp, newPassword }
       );
-      alert('Password reset successful!');
-      navigate('/login'); // Redirect to login after successful reset
+      alert("Password reset successful!");
+      navigate("/login"); // Redirect to login after successful reset
     } catch (error) {
-      setError('Failed to reset password. Please check your details.');
+      setError("Failed to reset password. Please check your details.");
     }
   };
 

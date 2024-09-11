@@ -8,68 +8,70 @@ const CompareProducts = () => {
 
     // Fetch all products
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get(
-                  "eteanepalbackend-production.up.railway.app/api/products",
-                  {
-                    headers: {
-                      "x-auth-token": localStorage.getItem("x-auth-token"),
-                    },
-                  }
-                );
-                setProducts(response.data);
-            } catch (error) {
-                console.error('Error fetching products:', error);
+      const fetchProducts = async () => {
+        try {
+          const response = await axios.get(
+            "https://eteanepalbackend-production.up.railway.app/api/products",
+            {
+              headers: {
+                "x-auth-token": localStorage.getItem("x-auth-token"),
+              },
             }
-        };
+          );
+          setProducts(response.data);
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
 
-        fetchProducts();
+      fetchProducts();
     }, []);
 
     // Handle product selection
     const handleProductSelect = (productId) => {
-        setSelectedProductIds(prevIds =>
-            prevIds.includes(productId)
-                ? prevIds.filter(id => id !== productId)
-                : [...prevIds, productId]
-        );
+      setSelectedProductIds((prevIds) =>
+        prevIds.includes(productId)
+          ? prevIds.filter((id) => id !== productId)
+          : [...prevIds, productId]
+      );
     };
 
     // Handle compare button click
     const handleCompare = async () => {
-        if (selectedProductIds.length < 2) {
-            alert('Select at least two products to compare.');
-            return;
+      if (selectedProductIds.length < 2) {
+        alert("Select at least two products to compare.");
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await axios.get(
+          "https://eteanepalbackend-production.up.railway.app/api/algorithms/compare-products",
+          {
+            params: { ids: selectedProductIds.join(",") },
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
+
+        // Display alert with comparison result
+        if (response.data && response.data.length > 0) {
+          const productNames = response.data.map((product) => product.name);
+          const alertMessage = productNames.join(
+            " IS BETTER VALUE FOR MONEY THAN "
+          );
+          alert(`${alertMessage}`);
+
+          // Clear selected product ids after comparison
+          setSelectedProductIds([]);
         }
+      } catch (error) {
+        console.error("Error fetching comparison data:", error);
+      }
 
-        setLoading(true);
-
-        try {
-            const response = await axios.get(
-              "eteanepalbackend-production.up.railway.app/api/algorithms/compare-products",
-              {
-                params: { ids: selectedProductIds.join(",") },
-                headers: {
-                  "x-auth-token": localStorage.getItem("x-auth-token"),
-                },
-              }
-            );
-
-            // Display alert with comparison result
-            if (response.data && response.data.length > 0) {
-                const productNames = response.data.map(product => product.name);
-                const alertMessage = productNames.join(' IS BETTER VALUE FOR MONEY THAN '); 
-                alert(`${alertMessage}`);
-
-                // Clear selected product ids after comparison
-                setSelectedProductIds([]);
-            }
-        } catch (error) {
-            console.error('Error fetching comparison data:', error);
-        }
-
-        setLoading(false);
+      setLoading(false);
     };
 
     return (

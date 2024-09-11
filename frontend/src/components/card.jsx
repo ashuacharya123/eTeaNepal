@@ -86,7 +86,7 @@ const Card = (props) => {
             src={
               image === ""
                 ? tea
-                : `eteanepalbackend-production.up.railway.app/public/${image}`
+                : `https://eteanepalbackend-production.up.railway.app/public/${image}`
             }
             alt="tea"
             className={stock < 1 ? "blurred" : ""}

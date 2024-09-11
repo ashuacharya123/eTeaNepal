@@ -16,20 +16,20 @@ const Shop = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        "eteanepalbackend-production.up.railway.app/api/products",
+        "https://eteanepalbackend-production.up.railway.app/api/products",
         {
           params: {
             sort: sortOption === "Default" ? undefined : sortOption,
           },
         }
       );
-      const products = response.data.map(product => ({
+      const products = response.data.map((product) => ({
         ...product,
         image: product.image || "",
       }));
       setCardList(products);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     }
     setLoading(false);
   };
@@ -40,18 +40,18 @@ const Shop = () => {
       setSearchLoading(true);
       try {
         const response = await axios.get(
-          "eteanepalbackend-production.up.railway.app/api/algorithms/search",
+          "https://eteanepalbackend-production.up.railway.app/api/algorithms/search",
           {
             params: { query },
           }
         );
-        const products = response.data.map(product => ({
+        const products = response.data.map((product) => ({
           ...product,
           image: product.image || "",
         }));
         setCardList(products);
       } catch (error) {
-        console.error('Error searching products:', error);
+        console.error("Error searching products:", error);
       }
       setSearchLoading(false);
     }, 1000),

@@ -9,66 +9,66 @@ const ManageUsers = () => {
 
     // Fetch users
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get(
-                  "eteanepalbackend-production.up.railway.app/api/admin/all-users",
-                  {
-                    headers: {
-                      "x-auth-token": localStorage.getItem("x-auth-token"),
-                    },
-                  }
-                );
-                setUsers(response.data);
-                setFilteredUsers(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-                setLoading(false);
+      const fetchUsers = async () => {
+        try {
+          const response = await axios.get(
+            "https://eteanepalbackend-production.up.railway.app/api/admin/all-users",
+            {
+              headers: {
+                "x-auth-token": localStorage.getItem("x-auth-token"),
+              },
             }
-        };
+          );
+          setUsers(response.data);
+          setFilteredUsers(response.data);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching users:", error);
+          setLoading(false);
+        }
+      };
 
-        fetchUsers();
+      fetchUsers();
     }, []);
 
     // Handle search input change
     const handleSearchChange = (e) => {
-        const query = e.target.value.toLowerCase();
-        setSearchQuery(query);
+      const query = e.target.value.toLowerCase();
+      setSearchQuery(query);
 
-        // Filter users based on search query
-        const filtered = users.filter(user =>
-            user.name.toLowerCase().includes(query)
-        );
-        setFilteredUsers(filtered);
+      // Filter users based on search query
+      const filtered = users.filter((user) =>
+        user.name.toLowerCase().includes(query)
+      );
+      setFilteredUsers(filtered);
     };
 
     // Handle delete user
     const handleDelete = async (userId) => {
-        if (window.confirm('Are you sure you want to delete this user?')) {
-            try {
-                await axios.delete(
-                  `eteanepalbackend-production.up.railway.app/api/admin/delete-user/${userId}`,
-                  {
-                    headers: {
-                      "x-auth-token": localStorage.getItem("x-auth-token"),
-                    },
-                  }
-                );
-                setUsers(users.filter(user => user._id !== userId));
-                setFilteredUsers(filteredUsers.filter(user => user._id !== userId));
-                alert('Successfully deleted');
-            } catch (error) {
-                console.error('Error deleting user:', error);
+      if (window.confirm("Are you sure you want to delete this user?")) {
+        try {
+          await axios.delete(
+            `https://eteanepalbackend-production.up.railway.app/api/admin/delete-user/${userId}`,
+            {
+              headers: {
+                "x-auth-token": localStorage.getItem("x-auth-token"),
+              },
             }
+          );
+          setUsers(users.filter((user) => user._id !== userId));
+          setFilteredUsers(filteredUsers.filter((user) => user._id !== userId));
+          alert("Successfully deleted");
+        } catch (error) {
+          console.error("Error deleting user:", error);
         }
+      }
     };
 
     // Handle make admin
     const handleMakeAdmin = async (userId) => {
         try {
             await axios.patch(
-              `eteanepalbackend-production.up.railway.app/api/admin/make-admin/${userId}`,
+              `https://eteanepalbackend-production.up.railway.app/api/admin/make-admin/${userId}`,
               {},
               {
                 headers: {

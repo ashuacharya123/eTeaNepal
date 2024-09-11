@@ -26,14 +26,14 @@ const Profile = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          "eteanepalbackend-production.up.railway.app/api/user/me",
+          "https://eteanepalbackend-production.up.railway.app/api/user/me",
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -44,13 +44,13 @@ const Profile = () => {
         setFormData({
           name: response.data.name,
           email: response.data.email,
-          mobileNumber: response.data.mobileNumber || '',
-          address: response.data.address || '',
+          mobileNumber: response.data.mobileNumber || "",
+          address: response.data.address || "",
           avatar: null, // Initialize avatar as null
         });
       } catch (error) {
-        setError('Failed to fetch user data. Please try again.');
-        navigate('/login');
+        setError("Failed to fetch user data. Please try again.");
+        navigate("/login");
       }
     };
 
@@ -71,17 +71,17 @@ const Profile = () => {
 
   const handleUpdateDetails = async () => {
     const formDataToSend = new FormData();
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('email', formData.email);
-    formDataToSend.append('mobileNumber', formData.mobileNumber);
-    formDataToSend.append('address', formData.address);
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("mobileNumber", formData.mobileNumber);
+    formDataToSend.append("address", formData.address);
     if (formData.avatar) {
-      formDataToSend.append('avatar', formData.avatar);
+      formDataToSend.append("avatar", formData.avatar);
     }
 
     try {
       await axios.put(
-        "eteanepalbackend-production.up.railway.app/api/user/me",
+        "https://eteanepalbackend-production.up.railway.app/api/user/me",
         formDataToSend,
         {
           headers: {
@@ -92,7 +92,7 @@ const Profile = () => {
       );
       setEditDetails(false);
       const response = await axios.get(
-        "eteanepalbackend-production.up.railway.app/api/user/me",
+        "https://eteanepalbackend-production.up.railway.app/api/user/me",
         {
           headers: {
             "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -101,14 +101,22 @@ const Profile = () => {
       );
       setUserData(response.data);
       const { avatar, role, name, address, mobileNumber } = response.data;
-      localStorage.setItem('avatar', avatar);
-      localStorage.setItem('name', name);
-      localStorage.setItem('role', role);
-      if(address){localStorage.setItem('address', address)}else{localStorage.setItem('address', "")}
-      if(mobileNumber){localStorage.setItem('mobileNumber', mobileNumber)}else{localStorage.setItem('mobileNumber', "")}
+      localStorage.setItem("avatar", avatar);
+      localStorage.setItem("name", name);
+      localStorage.setItem("role", role);
+      if (address) {
+        localStorage.setItem("address", address);
+      } else {
+        localStorage.setItem("address", "");
+      }
+      if (mobileNumber) {
+        localStorage.setItem("mobileNumber", mobileNumber);
+      } else {
+        localStorage.setItem("mobileNumber", "");
+      }
       alert("Successfully changed the details");
     } catch (error) {
-      setError('Failed to update details. Please try again.');
+      setError("Failed to update details. Please try again.");
       alert("Failed to update details. Please try again.");
     }
   };
@@ -116,7 +124,7 @@ const Profile = () => {
   const handleChangePassword = async () => {
     try {
       await axios.put(
-        "eteanepalbackend-production.up.railway.app/api/user/change-password",
+        "https://eteanepalbackend-production.up.railway.app/api/user/change-password",
         passwordData,
         {
           headers: {
@@ -127,7 +135,7 @@ const Profile = () => {
       setEditPassword(false);
       alert("Password Changed Successfully");
     } catch (error) {
-      setError('Failed to change password. Please try again.');
+      setError("Failed to change password. Please try again.");
     }
   };
 
@@ -138,10 +146,14 @@ const Profile = () => {
       return;
     }
 
-    if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      )
+    ) {
       try {
         await axios.delete(
-          "eteanepalbackend-production.up.railway.app/api/user/me",
+          "https://eteanepalbackend-production.up.railway.app/api/user/me",
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -150,16 +162,16 @@ const Profile = () => {
           }
         );
         logout();
-        navigate('/');
+        navigate("/");
       } catch (error) {
-        setError('Failed to delete account. Please try again.');
+        setError("Failed to delete account. Please try again.");
       }
     }
   };
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
   if (!userData) {
@@ -175,7 +187,7 @@ const Profile = () => {
         {!editDetails ? (
           <div className="profile__details__content">
             <img
-              src={`eteanepalbackend-production.up.railway.app/public/${userData.avatar}`}
+              src={`https://eteanepalbackend-production.up.railway.app/public/${userData.avatar}`}
               alt="Your Avatar"
               style={{
                 width: "100px",

@@ -12,7 +12,7 @@ const VerifySeller = () => {
   const fetchSellers = async () => {
     try {
       const res = await axios.get(
-        "eteanepalbackend-production.up.railway.app/api/admin/sellers",
+        "https://eteanepalbackend-production.up.railway.app/api/admin/sellers",
         {
           headers: {
             "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -22,7 +22,7 @@ const VerifySeller = () => {
       setSellers(res.data);
       setLoading(false);
     } catch (err) {
-      console.error('Error fetching sellers', err);
+      console.error("Error fetching sellers", err);
       setLoading(false);
     }
   };
@@ -30,7 +30,7 @@ const VerifySeller = () => {
   const handleVerification = async (sellerId) => {
     try {
       await axios.put(
-        `eteanepalbackend-production.up.railway.app/api/admin/verify/seller/${sellerId}`,
+        `https://eteanepalbackend-production.up.railway.app/api/admin/verify/seller/${sellerId}`,
         {},
         {
           headers: {
@@ -38,10 +38,10 @@ const VerifySeller = () => {
           },
         }
       );
-      alert("Success ✅")
+      alert("Success ✅");
       fetchSellers(); // Re-fetch sellers after verification
     } catch (err) {
-      console.error('Error verifying seller', err);
+      console.error("Error verifying seller", err);
     }
   };
 

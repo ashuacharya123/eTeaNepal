@@ -35,42 +35,50 @@ const LoginSignup = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/auth/login",
+        "https://eteanepalbackend-production.up.railway.app/api/auth/login",
         {
           email: formData.email,
           password: formData.password,
         }
       );
       localStorage.clear();
-      login(response.data['token']);
+      login(response.data["token"]);
 
       // Store avatar and role in local storage
       const fetchUserData = async () => {
         try {
           const response = await axios.get(
-            "eteanepalbackend-production.up.railway.app/api/user/me",
+            "https://eteanepalbackend-production.up.railway.app/api/user/me",
             {
               headers: {
                 "x-auth-token": localStorage.getItem("x-auth-token"),
               },
             }
           );
-          const { avatar, role, name, address, mobileNumber, ratedProducts, _id } = response.data;
-          localStorage.setItem('avatar', avatar);
-          localStorage.setItem('name', name);
-          localStorage.setItem('role', role);
+          const {
+            avatar,
+            role,
+            name,
+            address,
+            mobileNumber,
+            ratedProducts,
+            _id,
+          } = response.data;
+          localStorage.setItem("avatar", avatar);
+          localStorage.setItem("name", name);
+          localStorage.setItem("role", role);
           if (address) {
-            localStorage.setItem('address', address);
+            localStorage.setItem("address", address);
           } else {
-            localStorage.setItem('address', "");
+            localStorage.setItem("address", "");
           }
           if (mobileNumber) {
-            localStorage.setItem('mobileNumber', mobileNumber);
+            localStorage.setItem("mobileNumber", mobileNumber);
           } else {
-            localStorage.setItem('mobileNumber', "");
+            localStorage.setItem("mobileNumber", "");
           }
-          localStorage.setItem('ratedProducts', JSON.stringify(ratedProducts));
-          localStorage.setItem('id', _id);
+          localStorage.setItem("ratedProducts", JSON.stringify(ratedProducts));
+          localStorage.setItem("id", _id);
         } catch (error) {
           // Handle error if needed
         }
@@ -93,7 +101,7 @@ const LoginSignup = () => {
     setLoading(true); // Start loading
     try {
       const response = await axios.post(
-        "eteanepalbackend-production.up.railway.app/api/auth/signup",
+        "https://eteanepalbackend-production.up.railway.app/api/auth/signup",
         {
           name: formData.name,
           email: formData.email,

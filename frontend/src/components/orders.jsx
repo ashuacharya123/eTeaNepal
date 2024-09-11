@@ -9,14 +9,15 @@ const OrderPage = () => {
 
   // Load ratedProducts from localStorage on mount
   useEffect(() => {
-    const storedRatedProducts = JSON.parse(localStorage.getItem('ratedProducts')) || [];
+    const storedRatedProducts =
+      JSON.parse(localStorage.getItem("ratedProducts")) || [];
     setRatedProducts(storedRatedProducts);
 
     // Fetch orders from backend
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          "eteanepalbackend-production.up.railway.app/api/orders",
+          "https://eteanepalbackend-production.up.railway.app/api/orders",
           {
             headers: {
               "x-auth-token": localStorage.getItem("x-auth-token"),
@@ -36,7 +37,7 @@ const OrderPage = () => {
   const handleRating = async (productId, newRating) => {
     try {
       await axios.put(
-        "eteanepalbackend-production.up.railway.app/api/user/product/rating",
+        "https://eteanepalbackend-production.up.railway.app/api/user/product/rating",
         { productId, newRating },
         {
           headers: {
@@ -48,13 +49,20 @@ const OrderPage = () => {
       alert("Rating submitted successfully!");
 
       // Update localStorage with the new rating
-      const updatedRatedProducts = [...ratedProducts, { productId, rating: newRating }];
-      localStorage.setItem('ratedProducts', JSON.stringify(updatedRatedProducts));
+      const updatedRatedProducts = [
+        ...ratedProducts,
+        { productId, rating: newRating },
+      ];
+      localStorage.setItem(
+        "ratedProducts",
+        JSON.stringify(updatedRatedProducts)
+      );
       setRatedProducts(updatedRatedProducts);
-
     } catch (error) {
       console.error("Failed to submit rating", error);
-      if (error.response?.data?.message === "You have already rated this product") {
+      if (
+        error.response?.data?.message === "You have already rated this product"
+      ) {
         alert("You have already rated this product");
       } else {
         alert("Failed to submit rating. Please try again later.");
