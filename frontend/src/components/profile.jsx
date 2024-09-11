@@ -32,11 +32,14 @@ const Profile = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/user/me', {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        const response = await axios.get(
+          "eteanepalbackend-production.up.railway.app/api/user/me",
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         setUserData(response.data);
         setFormData({
           name: response.data.name,
@@ -77,18 +80,25 @@ const Profile = () => {
     }
 
     try {
-      await axios.put('http://localhost:8000/api/user/me', formDataToSend, {
-        headers: {
-          'x-auth-token': localStorage.getItem('x-auth-token'),
-          'Content-Type': 'multipart/form-data', // Important for file upload
-        },
-      });
+      await axios.put(
+        "eteanepalbackend-production.up.railway.app/api/user/me",
+        formDataToSend,
+        {
+          headers: {
+            "x-auth-token": localStorage.getItem("x-auth-token"),
+            "Content-Type": "multipart/form-data", // Important for file upload
+          },
+        }
+      );
       setEditDetails(false);
-      const response = await axios.get('http://localhost:8000/api/user/me', {
-        headers: {
-          'x-auth-token': localStorage.getItem('x-auth-token'),
-        },
-      });
+      const response = await axios.get(
+        "eteanepalbackend-production.up.railway.app/api/user/me",
+        {
+          headers: {
+            "x-auth-token": localStorage.getItem("x-auth-token"),
+          },
+        }
+      );
       setUserData(response.data);
       const { avatar, role, name, address, mobileNumber } = response.data;
       localStorage.setItem('avatar', avatar);
@@ -105,11 +115,15 @@ const Profile = () => {
 
   const handleChangePassword = async () => {
     try {
-      await axios.put('http://localhost:8000/api/user/change-password', passwordData, {
-        headers: {
-          'x-auth-token': localStorage.getItem('x-auth-token'),
-        },
-      });
+      await axios.put(
+        "eteanepalbackend-production.up.railway.app/api/user/change-password",
+        passwordData,
+        {
+          headers: {
+            "x-auth-token": localStorage.getItem("x-auth-token"),
+          },
+        }
+      );
       setEditPassword(false);
       alert("Password Changed Successfully");
     } catch (error) {
@@ -126,12 +140,15 @@ const Profile = () => {
 
     if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       try {
-        await axios.delete('http://localhost:8000/api/user/me', {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-          data: { password } 
-        });
+        await axios.delete(
+          "eteanepalbackend-production.up.railway.app/api/user/me",
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+            data: { password },
+          }
+        );
         logout();
         navigate('/');
       } catch (error) {
@@ -151,44 +168,97 @@ const Profile = () => {
 
   return (
     <div className="profile__container">
-      <h1>Hi, <span>{userData.name.split(' ')[0]}</span></h1>
+      <h1>
+        Hi, <span>{userData.name.split(" ")[0]}</span>
+      </h1>
       <div className="profile__details">
         {!editDetails ? (
           <div className="profile__details__content">
             <img
-              src={`http://localhost:8000/public/${userData.avatar}`}
+              src={`eteanepalbackend-production.up.railway.app/public/${userData.avatar}`}
               alt="Your Avatar"
-              style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit:"cover" }}
+              style={{
+                width: "100px",
+                height: "100px",
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
             />
             <h2>{userData.name}</h2>
             <p>{userData.email}</p>
-            <p>{userData.mobileNumber || '+977 XXXXXXXX'}</p>
-            <p>{userData.address || 'Your address here'}</p>
-            <button className="btn" onClick={() => setEditDetails(true)}>Change Details</button>
+            <p>{userData.mobileNumber || "+977 XXXXXXXX"}</p>
+            <p>{userData.address || "Your address here"}</p>
+            <button className="btn" onClick={() => setEditDetails(true)}>
+              Change Details
+            </button>
           </div>
         ) : (
           <div className="profile__details__content__edit">
             <label>Name:</label>
-            <input name="name" value={formData.name} onChange={handleFormChange} />
+            <input
+              name="name"
+              value={formData.name}
+              onChange={handleFormChange}
+            />
             <label>Email:</label>
-            <input name="email" value={formData.email} onChange={handleFormChange} />
+            <input
+              name="email"
+              value={formData.email}
+              onChange={handleFormChange}
+            />
             <label>Mobile Number:</label>
-            <input name="mobileNumber" value={formData.mobileNumber} onChange={handleFormChange} />
+            <input
+              name="mobileNumber"
+              value={formData.mobileNumber}
+              onChange={handleFormChange}
+            />
             <label>Address:</label>
-            <input name="address" value={formData.address} onChange={handleFormChange} />
+            <input
+              name="address"
+              value={formData.address}
+              onChange={handleFormChange}
+            />
             <label>Avatar:</label>
             <input type="file" name="avatar" onChange={handleFileChange} />
-            <button className="btn" onClick={handleUpdateDetails}>OK</button>
-            <button className="btn" onClick={() => setEditDetails(false)}>Cancel</button>
+            <button className="btn" onClick={handleUpdateDetails}>
+              OK
+            </button>
+            <button className="btn" onClick={() => setEditDetails(false)}>
+              Cancel
+            </button>
           </div>
         )}
       </div>
       <div className="profile__actions">
-        <button onClick={() => setEditPassword(true)} className="btn" style={{backgroundColor:'#E7D400',color:'black'}}>Change Password</button>
-        <button onClick={handleDeleteAccount}  className="btn" style={{backgroundColor:'#BF4B4B',}} >Delete Account</button>
-        <Link to="/orders" className="nav-btn" id={localStorage.getItem("role") === "seller" || localStorage.getItem("role") === "admin"?"dn":""}
-         ><button>View Orders</button></Link>
-        <button onClick={handleLogout} className="btn" >Logout</button>
+        <button
+          onClick={() => setEditPassword(true)}
+          className="btn"
+          style={{ backgroundColor: "#E7D400", color: "black" }}
+        >
+          Change Password
+        </button>
+        <button
+          onClick={handleDeleteAccount}
+          className="btn"
+          style={{ backgroundColor: "#BF4B4B" }}
+        >
+          Delete Account
+        </button>
+        <Link
+          to="/orders"
+          className="nav-btn"
+          id={
+            localStorage.getItem("role") === "seller" ||
+            localStorage.getItem("role") === "admin"
+              ? "dn"
+              : ""
+          }
+        >
+          <button>View Orders</button>
+        </Link>
+        <button onClick={handleLogout} className="btn">
+          Logout
+        </button>
       </div>
       {editPassword && (
         <div className="profile__details__content__edit">
@@ -208,8 +278,12 @@ const Profile = () => {
             value={passwordData.newPassword}
             onChange={handlePasswordChange}
           />
-          <button className="btn" onClick={handleChangePassword}>Change Password</button>
-          <button className="btn" onClick={() => setEditPassword(false)}>Cancel</button>
+          <button className="btn" onClick={handleChangePassword}>
+            Change Password
+          </button>
+          <button className="btn" onClick={() => setEditPassword(false)}>
+            Cancel
+          </button>
         </div>
       )}
       {error && <p className="error">{error}</p>}

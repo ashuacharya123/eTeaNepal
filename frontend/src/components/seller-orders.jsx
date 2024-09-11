@@ -23,11 +23,14 @@ const SellerOrder = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/orders/seller", {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        const response = await axios.get(
+          "eteanepalbackend-production.up.railway.app/api/orders/seller",
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         // Filter orders where sellerId is present in the items array
         const filteredOrders = response.data.filter(order =>
           order.items.some(item => item.sellerId.toString() === sellerId)
@@ -46,9 +49,10 @@ const SellerOrder = () => {
   // Handle status change
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await axios.put(`http://localhost:8000/api/orders/${orderId}/status`, 
+      await axios.put(
+        `eteanepalbackend-production.up.railway.app/api/orders/${orderId}/status`,
         { status: newStatus },
-        { headers: { 'x-auth-token': localStorage.getItem('x-auth-token') } }
+        { headers: { "x-auth-token": localStorage.getItem("x-auth-token") } }
       );
       setOrders(orders.map(order =>
         order._id === orderId ? { ...order, status: newStatus } : order

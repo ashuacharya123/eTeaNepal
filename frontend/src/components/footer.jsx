@@ -21,7 +21,10 @@ const Footer = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8000/api/subscribe', { email });
+      const response = await axios.post(
+        "eteanepalbackend-production.up.railway.app/api/subscribe",
+        { email }
+      );
       if (response.status === 200) {
         alert('Subscription successful!');
         setEmail(''); // Clear the input field

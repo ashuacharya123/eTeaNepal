@@ -30,7 +30,7 @@ const CheckoutForm = ({ handleOrder, totalPrice }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/payment-intent",
+        "eteanepalbackend-production.up.railway.app/api/payment-intent",
         {
           amount: totalPrice, // Convert to smallest currency unit (e.g., cents for USD)
           paymentMethodId: paymentMethod.id,

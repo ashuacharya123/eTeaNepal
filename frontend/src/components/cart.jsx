@@ -158,7 +158,7 @@ const Cart = () => {
                     src={
                       d.image.length === 0
                         ? tea
-                        : `http://localhost:8000/public/${d.image}`
+                        : `eteanepalbackend-production.up.railway.app/public/${d.image}`
                     }
                     alt=""
                   />

@@ -15,11 +15,14 @@ const OrderPage = () => {
     // Fetch orders from backend
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/orders", {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        const response = await axios.get(
+          "eteanepalbackend-production.up.railway.app/api/orders",
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         setOrders(response.data);
       } catch (error) {
         console.error("Failed to fetch orders:", error);
@@ -33,11 +36,11 @@ const OrderPage = () => {
   const handleRating = async (productId, newRating) => {
     try {
       await axios.put(
-        "http://localhost:8000/api/user/product/rating",
+        "eteanepalbackend-production.up.railway.app/api/user/product/rating",
         { productId, newRating },
         {
           headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
+            "x-auth-token": localStorage.getItem("x-auth-token"),
           },
         }
       );

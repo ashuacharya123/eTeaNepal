@@ -10,7 +10,10 @@ const VerifyOTP = () => {
 
   const handleVerify = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/verify', { email, otp });
+      const response = await axios.post(
+        "eteanepalbackend-production.up.railway.app/api/auth/verify",
+        { email, otp }
+      );
       // Handle successful verification
       alert('OTP has been verified, now you can login');
       navigate('/login'); // Redirect to a dashboard or homepage after successful verification
@@ -21,7 +24,10 @@ const VerifyOTP = () => {
 
   const handleResendOTP = async () => {
     try {
-      await axios.post('http://localhost:8000/api/auth/resend-otp', { email });
+      await axios.post(
+        "eteanepalbackend-production.up.railway.app/api/auth/resend-otp",
+        { email }
+      );
       alert('OTP has been resent to your email.');
     } catch (error) {
       setError('Failed to resend OTP. Please try again later.');

@@ -11,11 +11,14 @@ const SellerReport = () => {
   useEffect(() => {
     const fetchSellerReport = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/admin/seller-report/${sellerId}`, {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        const response = await axios.get(
+          `eteanepalbackend-production.up.railway.app/api/admin/seller-report/${sellerId}`,
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         setReport(response.data);
         setLoading(false);
       } catch (err) {
@@ -36,23 +39,27 @@ const SellerReport = () => {
       <p>Email: {report.seller.email}</p>
       <p>Total Sales: Rs{report.totalSales}</p>
       <p>Number of Orders: {report.numberOfOrders}</p>
-      
+
       <h3>Products</h3>
       <ul>
-        {report.products.map(product => (
+        {report.products.map((product) => (
           <li key={product.id}>
             <h4>{product.name}</h4>
             <p>Stock: {product.stock}</p>
             <p>Price: Rs{product.price}</p>
             <p>Initial Price: Rs{product.initialPrice}</p>
-            <img src={`http://localhost:8000/public/${product.image}`} alt={product.name} style={{ width: '100px' }} />
+            <img
+              src={`eteanepalbackend-production.up.railway.app/public/${product.image}`}
+              alt={product.name}
+              style={{ width: "100px" }}
+            />
           </li>
         ))}
       </ul>
 
       <h3>Orders</h3>
       <ul>
-        {report.orders.map(order => (
+        {report.orders.map((order) => (
           <li key={order.orderId}>
             <h4>Order ID: {order.orderId}</h4>
             <p>Total: Rs{order.total}</p>

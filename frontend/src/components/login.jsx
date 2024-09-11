@@ -34,21 +34,27 @@ const LoginSignup = () => {
   const handleLogin = async () => {
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/login', {
-        email: formData.email,
-        password: formData.password
-      });
+      const response = await axios.post(
+        "eteanepalbackend-production.up.railway.app/api/auth/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      );
       localStorage.clear();
       login(response.data['token']);
 
       // Store avatar and role in local storage
       const fetchUserData = async () => {
         try {
-          const response = await axios.get('http://localhost:8000/api/user/me', {
-            headers: {
-              'x-auth-token': localStorage.getItem('x-auth-token'),
-            },
-          });
+          const response = await axios.get(
+            "eteanepalbackend-production.up.railway.app/api/user/me",
+            {
+              headers: {
+                "x-auth-token": localStorage.getItem("x-auth-token"),
+              },
+            }
+          );
           const { avatar, role, name, address, mobileNumber, ratedProducts, _id } = response.data;
           localStorage.setItem('avatar', avatar);
           localStorage.setItem('name', name);
@@ -86,11 +92,14 @@ const LoginSignup = () => {
     }
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/signup', {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password
-      });
+      const response = await axios.post(
+        "eteanepalbackend-production.up.railway.app/api/auth/signup",
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }
+      );
       navigate('/verify-otp'); // Redirect to verify OTP page
     } catch (error) {
       alert('Signup failed. Please check your details.');

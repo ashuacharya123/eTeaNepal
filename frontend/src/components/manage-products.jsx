@@ -17,11 +17,14 @@ const ManageProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/products', {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        const response = await axios.get(
+          "eteanepalbackend-production.up.railway.app/api/products",
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         setProducts(response.data);
         setLoading(false);
       } catch (error) {
@@ -38,11 +41,14 @@ const ManageProducts = () => {
     const confirmed = window.confirm('Are you sure you want to delete this product?');
     if (confirmed) {
       try {
-        await axios.delete(`http://localhost:8000/api/products/${productId}`, {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        await axios.delete(
+          `eteanepalbackend-production.up.railway.app/api/products/${productId}`,
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         alert("Successfully Deleted ✅")
         setProducts(products.filter(product => product._id !== productId));
       } catch (error) {
@@ -75,11 +81,15 @@ const ManageProducts = () => {
   const handleSave = async () => {
     if (editingProduct) {
       try {
-        await axios.put(`http://localhost:8000/api/products/${editingProduct._id}`, formData, {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        await axios.put(
+          `eteanepalbackend-production.up.railway.app/api/products/${editingProduct._id}`,
+          formData,
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         // Update product list with new data
         setProducts(products.map(product =>
           product._id === editingProduct._id ? { ...product, ...formData } : product

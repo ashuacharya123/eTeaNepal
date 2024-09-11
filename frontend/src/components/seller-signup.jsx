@@ -39,11 +39,15 @@ const SellerSignup = () => {
         formDataToSend.append(key, formData[key]);
       }
 
-      const response = await axios.post('http://localhost:8000/api/seller/register', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      const response = await axios.post(
+        "eteanepalbackend-production.up.railway.app/api/seller/register",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
+      );
       navigate('/verify-otp'); // Redirect to verify OTP page
     } catch (error) {
       setError('Signup failed. Please check your details.');

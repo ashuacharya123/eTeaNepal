@@ -15,11 +15,14 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/dashboard', {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        const response = await axios.get(
+          "eteanepalbackend-production.up.railway.app/api/admin/dashboard",
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         setDashboardData(response.data);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);

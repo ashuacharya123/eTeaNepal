@@ -9,11 +9,14 @@ const PendingProducts = () => {
   useEffect(() => {
     const fetchPendingProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/products/pending', {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token')
+        const response = await axios.get(
+          "eteanepalbackend-production.up.railway.app/api/admin/products/pending",
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
           }
-        });
+        );
         setPendingProducts(response.data);
       } catch (err) {
         setError('Failed to fetch pending products.');
@@ -28,12 +31,12 @@ const PendingProducts = () => {
   const handleVerifyProduct = async (productId) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/admin/verify/product/${productId}`,
+        `eteanepalbackend-production.up.railway.app/api/admin/verify/product/${productId}`,
         {},
         {
           headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token')
-          }
+            "x-auth-token": localStorage.getItem("x-auth-token"),
+          },
         }
       );
       setPendingProducts(pendingProducts.map(product =>
@@ -56,12 +59,15 @@ const PendingProducts = () => {
         <p>No pending products found.</p>
       ) : (
         <ul>
-          {pendingProducts.map(product => (
+          {pendingProducts.map((product) => (
             <li key={product._id}>
               <h3>{product.name}</h3>
               <p>{product.description}</p>
               <p>Price: Rs{product.price}</p>
-              <img src={ `http://localhost:8000/public/${product.image}`} alt="tea" />
+              <img
+                src={`eteanepalbackend-production.up.railway.app/public/${product.image}`}
+                alt="tea"
+              />
               <button onClick={() => handleVerifyProduct(product._id)}>
                 Verify
               </button>

@@ -15,11 +15,14 @@ const Shop = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/api/products', {
-        params: {
-          sort: sortOption === 'Default' ? undefined : sortOption,
-        },
-      });
+      const response = await axios.get(
+        "eteanepalbackend-production.up.railway.app/api/products",
+        {
+          params: {
+            sort: sortOption === "Default" ? undefined : sortOption,
+          },
+        }
+      );
       const products = response.data.map(product => ({
         ...product,
         image: product.image || "",
@@ -36,9 +39,12 @@ const Shop = () => {
     debounce(async (query) => {
       setSearchLoading(true);
       try {
-        const response = await axios.get('http://localhost:8000/api/algorithms/search', {
-          params: { query },
-        });
+        const response = await axios.get(
+          "eteanepalbackend-production.up.railway.app/api/algorithms/search",
+          {
+            params: { query },
+          }
+        );
         const products = response.data.map(product => ({
           ...product,
           image: product.image || "",

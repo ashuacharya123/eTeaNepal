@@ -10,11 +10,14 @@ const SellersList = () => {
   useEffect(() => {
     const fetchSellers = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/admin/sellers', {
-          headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          },
-        });
+        const response = await axios.get(
+          "eteanepalbackend-production.up.railway.app/api/admin/sellers",
+          {
+            headers: {
+              "x-auth-token": localStorage.getItem("x-auth-token"),
+            },
+          }
+        );
         setSellers(response.data);
         setLoading(false);
       } catch (err) {

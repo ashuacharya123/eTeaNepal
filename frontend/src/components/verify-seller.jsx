@@ -11,11 +11,14 @@ const VerifySeller = () => {
 
   const fetchSellers = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/admin/sellers', {
-        headers: {
-          'x-auth-token': localStorage.getItem('x-auth-token'),
-        },
-      });
+      const res = await axios.get(
+        "eteanepalbackend-production.up.railway.app/api/admin/sellers",
+        {
+          headers: {
+            "x-auth-token": localStorage.getItem("x-auth-token"),
+          },
+        }
+      );
       setSellers(res.data);
       setLoading(false);
     } catch (err) {
@@ -27,12 +30,12 @@ const VerifySeller = () => {
   const handleVerification = async (sellerId) => {
     try {
       await axios.put(
-        `http://localhost:8000/api/admin/verify/seller/${sellerId}`,
+        `eteanepalbackend-production.up.railway.app/api/admin/verify/seller/${sellerId}`,
         {},
         {
           headers: {
-            'x-auth-token': localStorage.getItem('x-auth-token'),
-          }
+            "x-auth-token": localStorage.getItem("x-auth-token"),
+          },
         }
       );
       alert("Success ✅")

@@ -10,11 +10,14 @@ const CompareProducts = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/products', {
+                const response = await axios.get(
+                  "eteanepalbackend-production.up.railway.app/api/products",
+                  {
                     headers: {
-                        'x-auth-token': localStorage.getItem('x-auth-token'),
+                      "x-auth-token": localStorage.getItem("x-auth-token"),
                     },
-                });
+                  }
+                );
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products:', error);
@@ -43,12 +46,15 @@ const CompareProducts = () => {
         setLoading(true);
 
         try {
-            const response = await axios.get('http://localhost:8000/api/algorithms/compare-products', {
-                params: { ids: selectedProductIds.join(',') },
+            const response = await axios.get(
+              "eteanepalbackend-production.up.railway.app/api/algorithms/compare-products",
+              {
+                params: { ids: selectedProductIds.join(",") },
                 headers: {
-                    'x-auth-token': localStorage.getItem('x-auth-token'),
+                  "x-auth-token": localStorage.getItem("x-auth-token"),
                 },
-            });
+              }
+            );
 
             // Display alert with comparison result
             if (response.data && response.data.length > 0) {

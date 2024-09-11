@@ -23,7 +23,10 @@ const ForgotResetPassword = () => {
 
   const handleForgotPassword = async () => {
     try {
-      await axios.post('http://localhost:8000/api/auth/resend-otp', { email });
+      await axios.post(
+        "eteanepalbackend-production.up.railway.app/api/auth/resend-otp",
+        { email }
+      );
       alert('OTP has been sent to your email.');
       handleSwitchToResetPassword();
     } catch (error) {
@@ -33,7 +36,10 @@ const ForgotResetPassword = () => {
 
   const handleResetPassword = async () => {
     try {
-      await axios.post('http://localhost:8000/api/auth/reset-password', { email, otp, newPassword });
+      await axios.post(
+        "eteanepalbackend-production.up.railway.app/api/auth/reset-password",
+        { email, otp, newPassword }
+      );
       alert('Password reset successful!');
       navigate('/login'); // Redirect to login after successful reset
     } catch (error) {

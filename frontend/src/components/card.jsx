@@ -83,7 +83,11 @@ const Card = (props) => {
         </div>
         <div className="shop__container__content__card__container__card__image">
           <img
-            src={image === "" ? tea : `http://localhost:8000/public/${image}`}
+            src={
+              image === ""
+                ? tea
+                : `eteanepalbackend-production.up.railway.app/public/${image}`
+            }
             alt="tea"
             className={stock < 1 ? "blurred" : ""}
           />

@@ -10,7 +10,9 @@ const BestDeals = () => {
     useEffect(() => {
         const fetchTopProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/algorithms/top-products');
+                const response = await axios.get(
+                  "eteanepalbackend-production.up.railway.app/api/algorithms/top-products"
+                );
                 setTopProducts(response.data);
                 setLoading(false);
             } catch (error) {

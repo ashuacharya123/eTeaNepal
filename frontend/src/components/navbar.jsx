@@ -92,7 +92,7 @@ export default function Navbar() {
               <div className="avatar clickAnimation">
                 {avatar ? (
                   <img
-                    src={`http://localhost:8000/public/${avatar}`}
+                    src={`eteanepalbackend-production.up.railway.app/public/${avatar}`}
                     alt="User Avatar"
                     style={{
                       width: "32px",
