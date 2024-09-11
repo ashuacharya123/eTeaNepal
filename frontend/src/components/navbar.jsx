@@ -47,12 +47,15 @@ export default function Navbar() {
   const handleDeleteNotification = async (notificationId) => {
     try {
       const token = localStorage.getItem("x-auth-token");
-      await fetch(`/api/notifications/${notificationId}`, {
-        method: "DELETE",
-        headers: {
-          "x-auth-token": token,
-        },
-      });
+      await fetch(
+        `https://eteanepalbackend-production.up.railway.app/api/notifications/${notificationId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "x-auth-token": token,
+          },
+        }
+      );
       setNotifications(
         notifications.filter(
           (notification) => notification._id !== notificationId

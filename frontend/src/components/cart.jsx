@@ -109,11 +109,15 @@ const Cart = () => {
         buyerName: name,
       };
 
-      const response = await axios.post("/api/orders", orderData, {
-        headers: {
-          "x-auth-token": localStorage.getItem("x-auth-token"),
-        },
-      });
+      const response = await axios.post(
+        "https://eteanepalbackend-production.up.railway.app/api/orders",
+        orderData,
+        {
+          headers: {
+            "x-auth-token": localStorage.getItem("x-auth-token"),
+          },
+        }
+      );
 
       if (response.status === 201) {
         alert("Order placed successfully!");

@@ -20,9 +20,12 @@ const SellerDashboard = () => {
     const fetchDashboardData = async () => {
       try {
         const token = localStorage.getItem("x-auth-token");
-        const response = await fetch("/api/seller/dashboard", {
-          headers: { "x-auth-token": token },
-        });
+        const response = await fetch(
+          "https://eteanepalbackend-production.up.railway.app/api/seller/dashboard",
+          {
+            headers: { "x-auth-token": token },
+          }
+        );
         const data = await response.json();
         setTotalSales(data.totalSales);
         setTotalProducts(data.totalProducts);
@@ -66,13 +69,16 @@ const SellerDashboard = () => {
         formData.append("productImage", updatedProduct.image);
       }
 
-      const response = await fetch(`/api/products/${updatedProduct.id}`, {
-        method: "PUT",
-        headers: {
-          "x-auth-token": token,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `https://eteanepalbackend-production.up.railway.app/api/products/${updatedProduct.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "x-auth-token": token,
+          },
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         const updatedProductData = await response.json();
@@ -99,10 +105,13 @@ const SellerDashboard = () => {
       const deleteProduct = async () => {
         try {
           const token = localStorage.getItem("x-auth-token");
-          const response = await fetch(`/api/products/${productId}`, {
-            method: "DELETE",
-            headers: { "x-auth-token": token },
-          });
+          const response = await fetch(
+            `https://eteanepalbackend-production.up.railway.app/api/products/${productId}`,
+            {
+              method: "DELETE",
+              headers: { "x-auth-token": token },
+            }
+          );
           if (response.ok) {
             window.location.reload(); // Reload the page after deleting the product
           } else {
