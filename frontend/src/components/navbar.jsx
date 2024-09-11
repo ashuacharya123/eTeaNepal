@@ -27,11 +27,14 @@ export default function Navbar() {
       const fetchNotifications = async () => {
         try {
           const token = localStorage.getItem("x-auth-token");
-          const response = await fetch("/api/notifications?limit=10", {
-            headers: {
-              "x-auth-token": token,
-            },
-          });
+          const response = await fetch(
+            "https://eteanepalbackend-production.up.railway.app/api/notifications?limit=10",
+            {
+              headers: {
+                "x-auth-token": token,
+              },
+            }
+          );
 
           const data = await response.json();
           setNotifications(data);

@@ -168,7 +168,7 @@ const SellerDashboard = () => {
               >
                 <div className="seller-dashboard__lower__product__wrapper__product__image">
                   <img
-                    src={`/public/${product.image}`}
+                    src={`https://eteanepalbackend-production.up.railway.app/public/${product.image}`}
                     alt={product.name}
                     className="product-image"
                   />
