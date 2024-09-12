@@ -83,34 +83,41 @@ const OrderPage = () => {
 
   return (
     <div className="orders__container">
-      <h1>Hi, <span>{user}</span></h1>
+      <h1>
+        Hi, <span>{user}</span>
+      </h1>
       <div className="orders__container__content">
-      {orders.map((order, index) => (
-        <div key={index} className="orders__container__content__order">
-          {order.items.map((item, idx) => (
-            <div key={idx} className="order-item">
-              <h3>{item.name}</h3>
-              <p>Ordered on {new Date(order.createdAt).toLocaleDateString()}</p>
-              <p>Quantity: {item.quantity}</p>
-              <p>Order Total Rs{order.total+order.delivery}</p>
+        {orders.map((order, index) => (
+          <div key={index} className="orders__container__content__order">
+            {order.items.map((item, idx) => (
+              <div key={idx} className="order-item">
+                <h3>{item.name}</h3>
+                <p>
+                  Ordered on {new Date(order.createdAt).toLocaleDateString()}
+                </p>
+                <p>Quantity: {item.quantity}</p>
+                <p>Order Total Rs{order.total + order.delivery}</p>
+                <p>Status: {order.status}</p>
 
-              {/* Rating */}
-              {isProductRated(item.product) ? (
-                <p>Rated {getProductRating(item.product)} out of 5</p>
-              ) : (
-                <>
-                  <p>Rate Out of 5</p>
-                  <Rating
-                    rating={getProductRating(item.product)}
-                    onRatingChange={(newRating) => handleRating(item.product, newRating)}
-                  />
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+                {/* Rating */}
+                {isProductRated(item.product) ? (
+                  <p>Rated {getProductRating(item.product)} out of 5</p>
+                ) : (
+                  <>
+                    <p>Rate Out of 5</p>
+                    <Rating
+                      rating={getProductRating(item.product)}
+                      onRatingChange={(newRating) =>
+                        handleRating(item.product, newRating)
+                      }
+                    />
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
