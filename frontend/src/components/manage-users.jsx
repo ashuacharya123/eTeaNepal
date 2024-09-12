@@ -70,7 +70,7 @@ const ManageUsers = () => {
         window.confirm("Are you sure you want to make this user into admin?")
       ) {
         try {
-          await axios.patch(
+          await axios.put(
             `https://eteanepalbackend-production.up.railway.app/api/admin/make-admin/${userId}`,
             {},
             {
