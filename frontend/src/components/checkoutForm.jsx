@@ -23,7 +23,7 @@ const CheckoutForm = ({ handleOrder, totalPrice }) => {
     });
 
     if (error) {
-      console.error(error);
+      setLoading(false);
       alert("Payment failed. Please try again.");
       return;
     }
