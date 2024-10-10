@@ -1,2 +1,1 @@
-ashish jpayotei
-shreejan jpayo tei
+A E-commerce platform for boosting local Tea market and culture globally 
