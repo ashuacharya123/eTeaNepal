@@ -17,5 +17,6 @@ const TopProductsSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const TopProducts = mongoose.model('TopProducts', TopProductsSchema);
-
 module.exports = TopProducts;
+
+
